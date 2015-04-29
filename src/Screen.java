@@ -21,6 +21,7 @@ public class Screen extends JPanel{
 	public Screen() {
 		setPreferredSize(new Dimension(500,500));
 		try{
+			setPreferredSize(new Dimension(600,600));
 		background = ImageIO.read(getClass().getResourceAsStream(sprites.get("BACKGROUND")));
 		playerPic = ImageIO.read(getClass().getResourceAsStream(sprites.get("SHIP_PLAYER")));
 		bomb =  ImageIO.read(getClass().getResourceAsStream(sprites.get("WEAPON_TORPEDO")));
@@ -31,14 +32,23 @@ public class Screen extends JPanel{
 		entities.add(player);
 		
 		
+<<<<<<< HEAD
+=======
+		player = new Player(new Point(getWidth() / 2, getHeight() / 2),playerPic, 1000, new Bomb(bomb,100,10,2));
+		entities.add(player);
+>>>>>>> origin/master
 		setVisible(true);
 	}
 	
 	
 	public void paintComponent(Graphics g)
 	{
+<<<<<<< HEAD
 		super.paintComponent(g);
 		player.isFiring = true;
+=======
+		player.bounds.setLocation(getWidth() / 2, getHeight() / 2);
+>>>>>>> origin/master
 		for(int i = 0; i < getWidth(); i+= background.getWidth())
 		{
 			for(int j = 0; j < getHeight(); j+= background.getHeight())
@@ -48,7 +58,8 @@ public class Screen extends JPanel{
 		}
 		for(Entity e: entities)
 		{
-			g.drawImage(e.img, e.bounds.x, e.bounds.y, null);
+			g.drawImage(e.img, e.bounds.x, e.bounds.y, this);
+			System.out.println("draw");
 		}
 	}
 	
