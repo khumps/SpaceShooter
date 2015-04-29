@@ -1,9 +1,10 @@
 public abstract class Weapon {
-	private Projectile projectile;
+	protected Projectile projectile;
+
 	public Weapon(Projectile projectile) {
 		this.projectile = projectile;
 	}
 	
-	public abstract void fire();
+	public abstract Projectile fire(int direction);
 
 }

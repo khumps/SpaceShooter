@@ -5,14 +5,14 @@ import java.awt.image.BufferedImage;
 public class Bomber extends Ship {
 	private Bomb bomb;
 
-	public Bomber(Point corner, BufferedImage img) {
-		super(corner, img);
+	public Bomber(Point corner, BufferedImage img, Projectile) {
+		super(corner, img, 500, new Bomb());
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public void tick() {
-		shoot();
+	public void tick(int tickNum) {
+		if(tickNum % bomb.projectile.fireRate == 0) bomb.fire(orientation);
 		int decision = (int)(Math.random() * 16);
 		if(decision == 1 || decision == 2) //Move left
 			super.move(-5, 0);

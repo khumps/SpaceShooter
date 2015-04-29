@@ -6,9 +6,9 @@ import java.awt.image.BufferedImage;
 public abstract class Ship extends Entity {
 	private int health;
 	private boolean isAlive;
-	private Projectile weapon;
+	protected Weapon weapon;
 
-	public Ship(Point corner, BufferedImage img, int health, Projectile weapon) {
+	public Ship(Point corner, BufferedImage img, int health, Weapon weapon) {
 		super(corner,img);
 		this.health = health;
 		isAlive = true;

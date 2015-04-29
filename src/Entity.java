@@ -1,17 +1,21 @@
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 public abstract class Entity implements Moveable {
-
-	protected final Rectangle bounds;
+	protected Rectangle bounds;
 	protected Point center;
 	protected final BufferedImage img;
 	protected int orientation = 0; // 1 - 8 N,NE,E,SE,S etc
 
 	public Entity(Point corner, BufferedImage img) {
 		bounds = new Rectangle();
-		bounds.setBounds(corner.x, corner.y, img.getWidth(), img.getHeight());
+		bounds.setBounds(corner.x, corner.y, 5, 5);
 		center = new Point(bounds.getCenterX(), bounds.getCenterY());
+		this.img = img;
+	}
+
+	public Entity(BufferedImage img) {
 		this.img = img;
 	}
 
@@ -22,16 +26,22 @@ public abstract class Entity implements Moveable {
 		return new Point(bounds.x, bounds.y);
 	}
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
 	protected abstract void tick(int tickNum);
 
-	public static boolean doesColide(Entity e1, Entity e2) {
-		if (e1.bounds.contains(e2.bounds))
+	public boolean doesColide(Entity other) {
+		if (bounds.intersects(other.bounds))
 			return true;
 		return false;
 	}
 
+	public static HashMap<String,String> loadSprites()
+	{
+		HashMap<String,String> sprites = new HashMap<String,String>();
+		sprites.put("BACKGROUND", "resources//space.png");
+		sprites.put("SHIP_PLAYER", "resources//starship.svg");
+		sprites.put("SHIP_BOMBER", "NEED ASSET");
+		sprites.put("WEAPON_TORPEDO", "resources//torpedo.svg");
+		sprites.put("WEAPON_LASER", "resources//projectile2.svg");
+		return sprites;
+	}
 }

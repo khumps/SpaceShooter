@@ -13,8 +13,11 @@
    width="1024"
    height="1024"
    id="svg2"
-   inkscape:version="0.48.0 r9654"
-   sodipodi:docname="space.svg">
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="space.svg"
+   inkscape:export-filename="C:\Users\Kevin\Documents\GitHub\SpaceShooter\src\resources\space.png"
+   inkscape:export-xdpi="17.578125"
+   inkscape:export-ydpi="17.578125">
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -24,15 +27,15 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1440"
-     inkscape:window-height="823"
+     inkscape:window-width="1680"
+     inkscape:window-height="987"
      id="namedview6494"
      showgrid="false"
      inkscape:zoom="0.70710678"
-     inkscape:cx="616.67172"
-     inkscape:cy="747.72187"
-     inkscape:window-x="0"
-     inkscape:window-y="24"
+     inkscape:cx="405.24679"
+     inkscape:cy="804.29041"
+     inkscape:window-x="1272"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg2" />
   <defs

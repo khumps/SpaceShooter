@@ -2,10 +2,10 @@ import java.awt.image.BufferedImage;
 
 
 public class Projectile extends Entity {
-	private final int damage;
-	private final int direction;
-	private final int velocity = 10;
-	private final int fireRate;
+	public final int damage;
+	public final int direction;
+	public final int velocity = 10;
+	public final int fireRate;
 	public final int PROJECTILE_SIZE = 20;
 
 	public Projectile(BufferedImage img,int damage, int direction, int fireRate) {
@@ -46,6 +46,12 @@ public class Projectile extends Entity {
 	protected void doDamage(Ship s)
 	{
 		s.takeDamage(damage);
+	}
+	
+	public void collidedWith(Entity other)
+	{
+		if(other instanceof Ship)
+			((Ship) other).takeDamage(damage);
 	}
 
 }
