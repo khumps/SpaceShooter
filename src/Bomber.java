@@ -5,8 +5,8 @@ import java.awt.image.BufferedImage;
 public class Bomber extends Ship {
 	private Bomb bomb;
 
-	public Bomber(Point corner, BufferedImage img, Projectile) {
-		super(corner, img, 500, new Bomb());
+	public Bomber(Point corner, BufferedImage img,Screen screen) {
+		super(corner, img, 500, new Bomb(img,10,10,10), screen);
 		// TODO Auto-generated constructor stub
 	}
 

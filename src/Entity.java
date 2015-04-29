@@ -38,10 +38,11 @@ public abstract class Entity implements Moveable {
 	{
 		HashMap<String,String> sprites = new HashMap<String,String>();
 		sprites.put("BACKGROUND", "resources//space.png");
-		sprites.put("SHIP_PLAYER", "resources//starship.svg");
-		sprites.put("SHIP_BOMBER", "NEED ASSET");
+		sprites.put("SHIP_PLAYER", "resources//starship.png");
+		sprites.put("SHIP_BOMBER", "resources//bomber.png");
 		sprites.put("WEAPON_TORPEDO", "resources//torpedo.svg");
 		sprites.put("WEAPON_LASER", "resources//projectile2.svg");
+		// Thanks to Ben Hetherington for bomber and starship png's
 		return sprites;
 	}
 }

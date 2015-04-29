@@ -5,25 +5,49 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.Timer;
 
-public class GameController {
+public class GameController extends JFrame{
+	private Timer timer;
 	private Screen screen;
+	GameListener listener = new GameListener(this);
+	private boolean pause = false;
+	private int numTicks = 0;
 	public GameController() {
+		timer = new Timer(30, listener);
+		timer.setActionCommand("timer");
 		screen = new Screen();
+		getContentPane().add(screen);
+		pack();
+		timer.start();
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setVisible(true);
 	}
 
 	private void addEntity(Entity e)
 	{
-		entities.add(e);
+		screen.entities.add(e);
 		tick();
 	}
 	
 	public void tick()
 	{
-		player.tick();
-		for(Entity e: entities)
+		if(!pause)
+		if(numTicks > 500)
+			numTicks = 0;
+		for(Entity e: screen.entities)
 		{
-			e.tick();
+			e.tick(numTicks);
 		}
+		
+	}
+	
+	public static void main(String[] args)
+	{
+		
+		GameController g = new GameController();
+		g.tick();
+		
 	}
 }

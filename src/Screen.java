@@ -1,3 +1,4 @@
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -14,20 +15,21 @@ public class Screen extends JPanel{
 	private BufferedImage bomb;
 	private BufferedImage playerPic;
 	private Player player;
-	private ArrayList<Entity> entities = new ArrayList<Entity>();
+	protected ArrayList<Entity> entities = new ArrayList<Entity>();
 
 
 	public Screen() {
+		setPreferredSize(new Dimension(500,500));
 		try{
 		background = ImageIO.read(getClass().getResourceAsStream(sprites.get("BACKGROUND")));
 		playerPic = ImageIO.read(getClass().getResourceAsStream(sprites.get("SHIP_PLAYER")));
 		bomb =  ImageIO.read(getClass().getResourceAsStream(sprites.get("WEAPON_TORPEDO")));
-		if(background == null) System.out.println("DGFSAF");
+		if(playerPic == null) System.out.println("DGFSAF");
 		}
 		catch(IOException e){System.out.println("error");}
+		player = new Player(new Point(300,300),playerPic, 1000, new Bomb(bomb,100,10,2),this);
+		entities.add(player);
 		
-		
-		player = new Player(new Point(getWidth() / 2, getHeight() / 2),playerPic, 1000, new Bomb(bomb,100,10,2));
 		
 		setVisible(true);
 	}
@@ -35,6 +37,8 @@ public class Screen extends JPanel{
 	
 	public void paintComponent(Graphics g)
 	{
+		super.paintComponent(g);
+		player.isFiring = true;
 		for(int i = 0; i < getWidth(); i+= background.getWidth())
 		{
 			for(int j = 0; j < getHeight(); j+= background.getHeight())

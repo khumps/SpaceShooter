@@ -8,20 +8,23 @@ import java.awt.event.MouseAdapter;
 public class GameListener extends MouseAdapter implements ActionListener,KeyListener {
 	GameController game;
 	public GameListener(GameController game) {
-		game = new GameController();
+		this.game = game;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if(e.getActionCommand().equals("timer"))
+			game.tick();
+		//System.out.println("work");
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyChar() == KeyEvent.VK_LEFT)
+		if(e.getKeyCode() == KeyEvent.VK_LEFT)
 		{
-			game.p
+			System.out.println("LEFT");
 		}
 		
 	}

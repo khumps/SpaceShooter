@@ -3,14 +3,14 @@ import java.awt.image.BufferedImage;
 public class Player extends Ship {
 	protected boolean isFiring;
 
-	public Player(Point corner, BufferedImage img, int health, Weapon weapon) {
-		super(corner, img, health, weapon);
+	public Player(Point corner, BufferedImage img, int health, Weapon weapon, Screen screen) {
+		super(corner, img, health, weapon,screen);
 	}
 
 	@Override
 	public void tick() {
 		if(isFiring)
-			weapon.fire(orientation);
+			screen.entities.add(weapon.fire(orientation));
 	}
 
 	@Override
