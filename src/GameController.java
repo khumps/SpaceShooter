@@ -8,22 +8,24 @@ import javax.imageio.ImageIO;
 
 public class GameController {
 	private Screen screen;
+	private int tickNum = 0;
 	public GameController() {
+		
 		screen = new Screen();
 	}
 
-	private void addEntity(Entity e)
+	public void addEntity(Entity e)
 	{
-		entities.add(e);
+		screen.entities.add(e);
 		tick();
 	}
 	
 	public void tick()
 	{
-		player.tick();
-		for(Entity e: entities)
+		for(Entity e: screen.entities)
 		{
-			e.tick();
+			e.tick(tickNum);
 		}
+		tickNum++;
 	}
 }
