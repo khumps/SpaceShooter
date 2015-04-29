@@ -1,0 +1,39 @@
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+
+
+public abstract class Ship extends Entity {
+	private int health;
+	private boolean isAlive;
+	private Projectile weapon;
+
+	public Ship(Point corner, BufferedImage img, int health, Projectile weapon) {
+		super(corner,img);
+		this.health = health;
+		isAlive = true;
+		this.weapon = weapon;
+	}
+	
+	/**
+	 * 
+	 * @param direction Number of 45 degree rotations from North
+	 */
+	public void orient(int direction)
+	{
+		int rotations = direction - orientation;
+		AffineTransform tx = new AffineTransform();
+		tx.rotate(rotations * Math.toRadians(45), super.img.getWidth() / 2,
+				super.img.getHeight() / 2);
+		AffineTransformOp op = new AffineTransformOp(tx,
+				AffineTransformOp.TYPE_BILINEAR);
+	}
+
+	public abstract void tick();
+	
+	public void takeDamage(int damage)
+	{
+		this.health -= damage;
+		if(health <= 0) isAlive = false;
+	}
+}

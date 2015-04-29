@@ -1,6 +1,7 @@
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -8,6 +9,7 @@ import javax.swing.JPanel;
 
 public class Screen extends JPanel{
 	private BufferedImage tile;
+
 
 	public Screen() {
 		try {
@@ -28,6 +30,10 @@ public class Screen extends JPanel{
 			{
 				g.drawImage(tile, i, j, null);
 			}
+		}
+		for(Entity e: entities)
+		{
+			g.drawImage(e.img, e.bounds.x, e.bounds.y, null);
 		}
 	}
 	
