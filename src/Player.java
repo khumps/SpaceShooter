@@ -7,16 +7,14 @@ public class Player extends Ship {
 		super(corner, img, health, weapon,screen);
 	}
 
-	@Override
-	public void tick() {
-		if(isFiring)
-			screen.entities.add(weapon.fire(orientation));
-	}
 
 	@Override
 	protected void tick(int tickNum) {
-		// TODO Auto-generated method stub
+		System.out.println(isFiring);
+		if(isFiring)
+			screen.entities.add(weapon.fire(orientation));
 		
 	}
+
 
 }

@@ -30,8 +30,6 @@ public abstract class Ship extends Entity {
 		AffineTransformOp op = new AffineTransformOp(tx,
 				AffineTransformOp.TYPE_BILINEAR);
 	}
-
-	public abstract void tick();
 	
 	public void takeDamage(int damage)
 	{

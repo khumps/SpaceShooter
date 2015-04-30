@@ -1,7 +1,9 @@
 public abstract class Weapon {
 	protected Projectile projectile;
+	protected Point source;
 
-	public Weapon(Projectile projectile) {
+	public Weapon(Point source, Projectile projectile) {
+		this.source = source;
 		this.projectile = projectile;
 	}
 	

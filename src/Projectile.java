@@ -1,3 +1,4 @@
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 
@@ -8,8 +9,8 @@ public class Projectile extends Entity {
 	public final int fireRate;
 	public final int PROJECTILE_SIZE = 20;
 
-	public Projectile(BufferedImage img,int damage, int direction, int fireRate) {
-		super(img);
+	public Projectile(Point source, BufferedImage img,int damage, int direction, int fireRate) {
+		super(source, img);
 		this.damage = damage;
 		this.direction = direction;
 		this.fireRate = fireRate;
@@ -21,9 +22,9 @@ public class Projectile extends Entity {
 		this.direction = p.direction;
 		this.fireRate = p.fireRate;
 	}
-	
 	protected void tick(int tickNum)
 	{
+		System.out.println("projectile");
 		if(direction == 1)
 		super.move(0, velocity * - 1);
 		if(direction == 2)

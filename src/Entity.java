@@ -6,7 +6,7 @@ public abstract class Entity implements Moveable {
 	protected Rectangle bounds;
 	protected Point center;
 	protected final BufferedImage img;
-	protected int orientation = 0; // 1 - 8 N,NE,E,SE,S etc
+	protected int orientation = 1; // 1 - 8 N,NE,E,SE,S etc
 
 	public Entity(Point corner, BufferedImage img) {
 		bounds = new Rectangle();
@@ -21,7 +21,13 @@ public abstract class Entity implements Moveable {
 
 	@Override
 	public Point move(int distX, int distY) {
-		bounds.setLocation(bounds.x + distX, bounds.y + distY);
+		Rectangle old = bounds;
+		System.out.println(this);
+		bounds
+		.setLocation
+		(bounds
+				.x
+				+ distX, old.y + distY);
 		center = new Point(bounds.getCenterX(), bounds.getCenterY());
 		return new Point(bounds.x, bounds.y);
 	}
@@ -40,7 +46,7 @@ public abstract class Entity implements Moveable {
 		sprites.put("BACKGROUND", "resources//space.png");
 		sprites.put("SHIP_PLAYER", "resources//starship.png");
 		sprites.put("SHIP_BOMBER", "resources//bomber.png");
-		sprites.put("WEAPON_TORPEDO", "resources//torpedo.svg");
+		sprites.put("WEAPON_TORPEDO", "resources//torpedo.png");
 		sprites.put("WEAPON_LASER", "resources//projectile2.svg");
 		// Thanks to Ben Hetherington for bomber and starship png's
 		return sprites;

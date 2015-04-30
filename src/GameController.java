@@ -11,19 +11,15 @@ import javax.swing.Timer;
 public class GameController extends JFrame{
 	private Timer timer;
 	private Screen screen;
-<<<<<<< HEAD
 	GameListener listener = new GameListener(this);
 	private boolean pause = false;
 	private int numTicks = 0;
-	public GameController() {
-		timer = new Timer(30, listener);
-		timer.setActionCommand("timer");
-=======
 	private int tickNum = 0;
 	public GameController() {
 		
->>>>>>> origin/master
 		screen = new Screen();
+		timer = new Timer(300, listener);
+		timer.setActionCommand("timer");
 		getContentPane().add(screen);
 		pack();
 		timer.start();
@@ -39,15 +35,15 @@ public class GameController extends JFrame{
 	
 	public void tick()
 	{
-<<<<<<< HEAD
 		if(!pause)
 		if(numTicks > 500)
 			numTicks = 0;
-		for(Entity e: screen.entities)
+		for(int i = 0; i < screen.entities.size(); i++)
 		{
-			e.tick(numTicks);
+			if(screen.entities.get(i) != null)
+			screen.entities.get(i).tick(numTicks);
 		}
-		
+		numTicks++;
 	}
 	
 	public static void main(String[] args)
@@ -55,13 +51,6 @@ public class GameController extends JFrame{
 		
 		GameController g = new GameController();
 		g.tick();
-		
-=======
-		for(Entity e: screen.entities)
-		{
-			e.tick(tickNum);
-		}
-		tickNum++;
->>>>>>> origin/master
+
 	}
 }

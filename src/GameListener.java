@@ -15,7 +15,7 @@ public class GameListener extends MouseAdapter implements ActionListener,KeyList
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("timer"))
 			game.tick();
-		//System.out.println("work");
+		System.out.println("work");
 		// TODO Auto-generated method stub
 		
 	}
