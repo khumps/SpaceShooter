@@ -1,16 +1,19 @@
 import java.awt.image.BufferedImage;
 
-
 public class Bomb extends Weapon {
 	protected Point firePoint;
 
-	public Bomb(Point source, BufferedImage img, int damage, int velocity,int fireRate) {
-		super(source, new Projectile(source, img, 100, 5, 30));
+	public Bomb(BufferedImage img, Point source, BufferedImage imgP, int damage, int velocity,
+			int fireRate) {
+		super(img, source, new Projectile(source, imgP, 100, 0, 300));
 	}
 
-	public Projectile fire(int direction) {
-		projectile.orientation = direction;
-		System.out.println("FIRE");
-		return new Projectile(super.projectile.center, projectile.img,projectile.damage,direction,projectile.fireRate);		
+	public Projectile fire(Point source,int direction) {
+		setOrientation(direction);
+		System.out.println(projectile.getOrientation());
+		return new Projectile(source, projectile.img,
+				projectile.damage,getOrientation(), projectile.fireRate);
+		
 	}
+
 }
