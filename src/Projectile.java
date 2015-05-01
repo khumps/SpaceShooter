@@ -4,49 +4,43 @@ import java.awt.image.BufferedImage;
 
 public class Projectile extends Entity {
 	public final int damage;
-	public final int direction;
 	public final int velocity = 10;
 	public final int fireRate;
-	public final int PROJECTILE_SIZE = 20;
+	public static final int PROJECTILE_SIZE = 45;
 
 	public Projectile(Point source, BufferedImage img,int damage, int direction, int fireRate) {
 		super(source, img);
 		this.damage = damage;
-		this.direction = direction;
 		this.fireRate = fireRate;
+		setOrientation(direction);
+		System.out.println(getOrientation());
 	}
 	public Projectile(Projectile p)
 	{
 		super(new Point(p.bounds.x,p.bounds.y),p.img);
 		this.damage = p.damage;
-		this.direction = p.direction;
+		setOrientation(p.getOrientation());
 		this.fireRate = p.fireRate;
 	}
 	protected void tick(int tickNum)
 	{
-		System.out.println("projectile");
-		if(direction == 1)
+		if(getOrientation() == 1)
 		super.move(0, velocity * - 1);
-		if(direction == 2)
+		if(getOrientation() == 2)
 		super.move(velocity, velocity * - 1);
-		if(direction == 3)
+		if(getOrientation() == 3)
 		super.move(velocity, 0);
-		if(direction == 4)
+		if(getOrientation() == 4)
 		super.move(velocity * - 1, velocity);
-		if(direction == 5)
+		if(getOrientation() == 5)
 		super.move(0, velocity);
-		if(direction == 6)
+		if(getOrientation() == 6)
 		super.move(velocity * - 1, velocity);
-		if(direction == 7)
+		if(getOrientation() == 7)
 			super.move(velocity * - 1, 0);
-		if(direction == 8)
+		if(getOrientation() == 8)
 		super.move(velocity * - 1, velocity * - 1);
 		
-	}
-	
-	protected void doDamage(Ship s)
-	{
-		s.takeDamage(damage);
 	}
 	
 	public void collidedWith(Entity other)

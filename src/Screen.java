@@ -14,28 +14,31 @@ public class Screen extends JPanel {
 	private BufferedImage background;
 	private BufferedImage bomb;
 	private BufferedImage playerPic;
+	private BufferedImage turret;
 	private Player player;
 	protected ArrayList<Entity> entities = new ArrayList<Entity>();
+	private ArrayList<Entity> toRemove = new ArrayList<Entity>();
 
 	public Screen() {
-		setPreferredSize(new Dimension(500,500));
-		try{
-			setPreferredSize(new Dimension(600,600));
-		background = ImageIO.read(getClass().getResourceAsStream(sprites.get("BACKGROUND")));
-		playerPic = ImageIO.read(getClass().getResourceAsStream(sprites.get("SHIP_PLAYER")));
-		bomb =  ImageIO.read(getClass().getResourceAsStream(sprites.get("WEAPON_TORPEDO")));
-		if(playerPic == null) System.out.println("DGFSAF");
+		setPreferredSize(new Dimension(500, 500));
+		try {
+			setPreferredSize(new Dimension(600, 600));
+			background = ImageIO.read(getClass().getResourceAsStream(
+					sprites.get("BACKGROUND")));
+			playerPic = ImageIO.read(getClass().getResourceAsStream(
+					sprites.get("SHIP_PLAYER")));
+			bomb = ImageIO.read(getClass().getResourceAsStream(
+					sprites.get("WEAPON_TORPEDO")));
+			turret = ImageIO.read(getClass().getResourceAsStream(sprites.get("TURRET")));
+			if (playerPic == null)
+				System.out.println("DGFSAF");
+		} catch (IOException e) {
+			System.out.println("error");
 		}
-		catch(IOException e){System.out.println("error");}
-		
-		
-		player = new Player(new Point(getWidth() / 2, getHeight() / 2)
-		,playerPic, 
-		1000, 
-		new 
-		Bomb(new Point(getWidth() / 2, getHeight() / 2),bomb,
-				100,10,2)
-		,this);
+
+		player = new Player(new Point(getWidth() / 2, getHeight() / 2),
+				playerPic, 1000, new Bomb(turret,new Point(getWidth() / 2,
+						getHeight() / 2), bomb, 100, 10, 2), this);
 		entities.add(player);
 		setVisible(true);
 	}
@@ -49,9 +52,20 @@ public class Screen extends JPanel {
 				g.drawImage(background, i, j, null);
 			}
 		}
-		for (Entity e : entities) {
-			g.drawImage(e.img, e.bounds.x, e.bounds.y, this);
-			System.out.println("draw");
+		for (int i = 0; i < entities.size(); i++) {
+			System.out.println("test");
+			Entity e = entities.get(i);
+			System.out.println(entities.size());
+			//if(!this.getBounds().contains(e.bounds)) entities.remove(i);
+			//else
+			{
+				if(e instanceof Projectile)
+					g.drawImage(e.img, e.center.x, e.center.y, Projectile.PROJECTILE_SIZE, Projectile.PROJECTILE_SIZE, this);
+
+				else
+					g.drawImage(e.img, e.bounds.x, e.bounds.y, this);
+			}
+
 		}
 	}
 

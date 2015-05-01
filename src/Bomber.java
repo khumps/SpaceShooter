@@ -11,6 +11,7 @@ public class Bomber extends Ship {
 	@Override
 	public void tick(int tickNum) {
 		if (tickNum % bomb.projectile.fireRate == 0)
+			bomb.fire(getOrientation());
 		int decision = (int) (Math.random() * 16);
 		if (decision == 1 || decision == 2) // Move left
 			super.move(-5, 0);
