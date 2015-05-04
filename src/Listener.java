@@ -9,7 +9,7 @@ import java.util.HashSet;
 public class Listener extends MouseAdapter implements KeyListener,
 		ActionListener {
 	private HashSet<Integer> keys = new HashSet<Integer>();
-	Point mousePosition;
+	Point mousePosition = new Point(1,1);
 	Screen screen;
 
 	public Listener(Screen s) {
@@ -41,35 +41,34 @@ public class Listener extends MouseAdapter implements KeyListener,
 		if (keys.contains(KeyEvent.VK_LEFT)) {
 
 			if (keys.contains(KeyEvent.VK_UP))
-				screen.player.setOrientation(-135);
+				screen.player.setOrientation(Math.toRadians(-135));
 			else if (keys.contains(KeyEvent.VK_DOWN))
-				screen.player.setOrientation(135);
+				screen.player.setOrientation(Math.toRadians(135));
 			else
-				screen.player.setOrientation(-180);
+				screen.player.setOrientation(Math.toRadians(-180));
 
 		} else if (keys.contains(KeyEvent.VK_RIGHT)) {
 
 			// System.out.println("Right");
 			if (keys.contains(KeyEvent.VK_DOWN)) {
-				screen.player.setOrientation(45);
+				screen.player.setOrientation(Math.toRadians(45));
 				// System.out.println("Right-Down");
 			} else if (keys.contains(KeyEvent.VK_UP)) {
-				screen.player.setOrientation(-45);
+				screen.player.setOrientation(Math.toRadians(-45));
 				// System.out.println("Right-Up");
 			} else
 				screen.player.setOrientation(0);
 		}
 
 		else if (keys.contains(KeyEvent.VK_UP)) {
-			screen.player.setOrientation(-90);
+			screen.player.setOrientation(Math.toRadians(-90));
 			// System.out.println("RAN");
 		} else if (keys.contains(KeyEvent.VK_DOWN)) {
 			// System.out.println("RAN");
-			screen.player.setOrientation(90);
+			screen.player.setOrientation(Math.toRadians(90));
 		}
 		if (keys.size() > 0)
 			screen.player.move(1);
-		screen.repaint();
 	}
 
 	@Override
@@ -78,13 +77,12 @@ public class Listener extends MouseAdapter implements KeyListener,
 
 		if (command.equals("timer")) {
 			act();
-			long start = System.nanoTime();
+			if(screen.player.hasMoved())
+			{
 			screen.player.moveTurret(mousePosition);
-			long stop = System.nanoTime();
-			System.out.println("BLAH");
-
 			screen.player.update();
-
+			}
+			screen.repaint();
 		}
 
 	}
@@ -92,6 +90,11 @@ public class Listener extends MouseAdapter implements KeyListener,
 	public void mouseMoved(MouseEvent e) {
 		mousePosition = new Point(e.getX(), e.getY());
 		screen.player.moveTurret(mousePosition);
+	}
+	
+	public void mouseClicked(MouseEvent e)
+	{
+		screen.player.fire();
 	}
 
 }
