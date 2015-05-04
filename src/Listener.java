@@ -77,6 +77,7 @@ public class Listener extends MouseAdapter implements KeyListener,
 
 		if (command.equals("timer")) {
 			act();
+			screen.tick();
 			if(screen.player.hasMoved())
 			{
 			screen.player.moveTurret(mousePosition);

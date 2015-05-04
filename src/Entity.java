@@ -2,6 +2,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public abstract class Entity {
 	private final BufferedImage origImg;
@@ -74,9 +75,12 @@ public abstract class Entity {
 				img.getWidth() / 2, Math.round(img.getHeight() / 2));
 		AffineTransformOp op = new AffineTransformOp(tx,
 				AffineTransformOp.TYPE_BILINEAR);
-		/*g.drawImage(op.filter(origImg, null), x, y, origImg.getWidth(),
-				origImg.getHeight(), 0, 0, BULLET_SIZE, BULLET_SIZE, null);*/
-		g.drawImage(img, ship.getPosition().x, ship.getPosition().y, BULLET_SIZE, BULLET_SIZE, null);
+		/*
+		 * g.drawImage(op.filter(origImg, null), x, y, origImg.getWidth(),
+		 * origImg.getHeight(), 0, 0, BULLET_SIZE, BULLET_SIZE, null);
+		 */
+		g.drawImage(img, ship.getPosition().x, ship.getPosition().y,
+				BULLET_SIZE, BULLET_SIZE, null);
 	}
 
 	public void setOrientation(double orientation) {

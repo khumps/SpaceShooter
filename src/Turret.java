@@ -3,8 +3,9 @@ import java.awt.image.BufferedImage;
 
 public class Turret extends Entity {
 	protected Projectile projectile;
+	public static final BufferedImage TURRET_IMAGE = Utils.loadImage("turret.png");
 
-	public Turret(BufferedImage img, double orientation, int fireRate, Projectile projectile, Screen screen) {
+	public Turret(BufferedImage img, double orientation, int fireRate, Projectile projectile) {
 		super(img, orientation, null);
 		this.projectile = projectile;
 		

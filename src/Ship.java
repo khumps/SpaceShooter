@@ -8,9 +8,11 @@ public abstract class Ship extends Entity {
 	private int health;
 	protected Turret turret;
 	private Screen screen;
+	
+	
 
-	public Ship(BufferedImage img, double orientation, Point location, int health, Turret turret, Screen screen) {
-		super(img,orientation,location);
+	public Ship(BufferedImage img, Point location, int health, Turret turret, Screen screen) {
+		super(img,Math.toRadians((Math.random() * 360)),location);
 		this.turret = turret;
 		this.health = health;
 		this.screen = screen;
@@ -38,7 +40,7 @@ public abstract class Ship extends Entity {
 	public void fire()
 	{
 		System.out.println("FIRE");
-		screen.entities.add(new Projectile(turret.projectile.img, getPosition(),turret.projectile.getOrientation(), turret.projectile.damage, turret.projectile.BULLET_VELOCITY));
+		screen.entities.add(new Projectile(turret.projectile.img, getPosition(),turret.projectile.getOrientation(), turret.projectile.damage, Projectile.TORPEDO_VELOCITY));
 	}
 
 }

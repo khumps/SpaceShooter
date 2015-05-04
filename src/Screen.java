@@ -14,7 +14,8 @@ public class Screen extends JPanel {
 	private Listener listener = new Listener(this);
 	Timer timer = new Timer(1, listener);
 	int i = 0;
-	protected PlayerShip player = new PlayerShip(0.0, new Point(500, 500), this);
+	protected Point playerMovement = new Point(0,0);
+	protected PlayerShip player = new PlayerShip(new Point(500, 500), this);
 	private BufferedImage background = Utils.loadImage("space.png");
 
 	public Screen() {
@@ -41,11 +42,35 @@ public class Screen extends JPanel {
 		for (int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
 			e.update();
+			purgeEntities();
 /*			if (e instanceof Projectile)
 				e.drawProjectile(g2, corner, player);
 			else*/
 				e.draw(g2, corner);
 		}
+	}
+	
+	public void purgeEntities()
+	{
+		for(int i = 0; i < entities.size(); i++)
+		{
+			Entity e = entities.get(i);
+			if(!(e instanceof PlayerShip))
+			if(!getBounds().contains(e.getPosition().x, e.getPosition().y))
+				entities.remove(i);	
+		}
+	}
+	
+	public void tick()
+	{
+		Double r = Math.random() * 100;
+		if(r / 10 == 10)
+			entities.add(new EnemyShip(pointOnScreen(),this));
+	}
+	
+	public Point pointOnScreen()
+	{
+		return new Point(Math.random() * getWidth(), Math.random() * getHeight());
 	}
 
 	public static void main(String[] args) {
