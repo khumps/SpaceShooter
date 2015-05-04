@@ -12,7 +12,7 @@ import javax.swing.Timer;
 public class Screen extends JPanel {
 	protected ArrayList<Entity> entities = new ArrayList<Entity>();
 	private Listener listener = new Listener(this);
-	Timer timer = new Timer(10, listener);
+	Timer timer = new Timer(1, listener);
 	int i = 0;
 	protected PlayerShip player = new PlayerShip(0.0, new Point(500, 500), this);
 	private BufferedImage background = Utils.loadImage("space.png");
@@ -29,21 +29,22 @@ public class Screen extends JPanel {
 		setVisible(true);
 	}
 
-	public void paintComponent(Graphics g)
-	{
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		Point corner = new Point(getBounds().x,getBounds().y);
+		Point corner = new Point(getBounds().x, getBounds().y);
 		for (int i = 0; i < getWidth(); i += background.getWidth()) {
 			for (int j = 0; j < getHeight(); j += background.getHeight()) {
 				g.drawImage(background, i, j, null);
 			}
 		}
-		for(int i = 0; i < entities.size(); i++)
-		{
+		for (int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
 			e.update();
-			e.draw(g2, corner);
+/*			if (e instanceof Projectile)
+				e.drawProjectile(g2, corner, player);
+			else*/
+				e.draw(g2, corner);
 		}
 	}
 

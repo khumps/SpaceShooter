@@ -2,7 +2,7 @@ import java.awt.image.BufferedImage;
 
 
 public class Turret extends Entity {
-	private Projectile projectile;
+	protected Projectile projectile;
 
 	public Turret(BufferedImage img, double orientation, int fireRate, Projectile projectile, Screen screen) {
 		super(img, orientation, null);

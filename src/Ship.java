@@ -34,5 +34,11 @@ public abstract class Ship extends Entity {
 		super.draw(g, corner);
 		turret.draw(g, corner);
 	}
+	
+	public void fire()
+	{
+		System.out.println("FIRE");
+		screen.entities.add(new Projectile(turret.projectile.img, getPosition(),turret.projectile.getOrientation(), turret.projectile.damage, turret.projectile.BULLET_VELOCITY));
+	}
 
 }
