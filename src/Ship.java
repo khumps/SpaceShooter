@@ -38,6 +38,12 @@ public abstract class Ship extends Entity {
 		turret.draw(g, corner);
 	}
 	
+	public void remove()
+	{
+		screen.entities.remove(turret);
+		screen.entities.remove(this);
+	}
+	
 	public void fire(int tickNum)
 	{
 		if(tickNum % turret.fireRate == 0)
