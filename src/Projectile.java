@@ -5,16 +5,13 @@ public class Projectile extends Entity {
 
 	public static final int TORPEDO_VELOCITY = 10;
 	public static final int TORPEDO_DAMAGE = 100;
-	public static final Projectile TORPEDO_PROJECTILE = new Projectile(
-			Utils.loadImage("torpedo.png"), new Point(1, 1), 10,
-			TORPEDO_DAMAGE, TORPEDO_VELOCITY);
 	private static final Rectangle TORPEDO_COLISION = new Rectangle(31,99,169,58);
 	protected final int damage;
 	protected final int velocity;
 
 	public Projectile(BufferedImage img, Point location, double orientation,
-			int damage, int velocity) {
-		super(Utils.rotate(img, Math.toRadians(90)), orientation, location, TORPEDO_COLISION);
+			int damage, int velocity, Screen screen) {
+		super(Utils.rotate(img, Math.toRadians(90)), orientation, location, TORPEDO_COLISION, screen);
 
 		this.damage = damage;
 		this.velocity = velocity;
@@ -22,6 +19,13 @@ public class Projectile extends Entity {
 
 	public void update(int tickNum) {
 		move(velocity);
+	}
+	
+	public void collides(Entity e)
+	{
+		if(e instanceof Ship)
+			((Ship) e).takeDamage(damage);
+		screen.entities.remove(this);
 	}
 
 }

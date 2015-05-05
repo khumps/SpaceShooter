@@ -9,8 +9,11 @@ public class EnemyShip extends Ship {
 
 	public EnemyShip(Point point, Screen screen) {
 		super(ENEMY_SHIP_IMAGE, point, INITIAL_HEALTH, new Turret(
-				Turret.TURRET_IMAGE, 10, 20, Projectile.TORPEDO_PROJECTILE),
-				new Rectangle(8, 16, 112, 112), screen);
+				Turret.TURRET_IMAGE, 10, 20, new Projectile(
+						Utils.loadImage("torpedo.png"), new Point(1, 1), 10,
+						Projectile.TORPEDO_DAMAGE, Projectile.TORPEDO_VELOCITY,
+						screen), screen), new Rectangle(8, 16, 112, 112),
+				screen);
 	}
 
 	public void update(int tickNum) {
@@ -35,5 +38,11 @@ public class EnemyShip extends Ship {
 				setOrientation(Entity.DOWN_LEFT);
 		}
 		move(VELOCITY);
+	}
+
+	@Override
+	public void collides(Entity e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

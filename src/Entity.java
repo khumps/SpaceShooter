@@ -21,18 +21,20 @@ public abstract class Entity {
 	private double orientation;
 	private Point position;
 	private boolean hasMoved;
-	protected Rectangle collisionArea;
+	protected Bounds collisionArea;
 	public final int BULLET_SIZE = 50;
+	protected Screen screen;
 
-	public Entity(BufferedImage img, double orientation, Point location, Rectangle collision) {
+	public Entity(BufferedImage img, double orientation, Point location, Rectangle collision, Screen screen) {
 		if(location == null)
 			position = new Point(100,10);
 		this.position = location;
-
+		this.screen = screen;
 		this.img = img;
 		this.origImg = img;
 		this.orientation = orientation;
-		this.collisionArea = collision;
+		collisionArea.area.
+		//setLocation(position.x - img.getWidth() / 2, position.y - img.getHeight() / 2);
 	}
 
 	public void move(double distance) {
@@ -42,7 +44,8 @@ public abstract class Entity {
 		double dy = distance * sin;
 		double x = Math.round(position.x + dx);
 		double y = Math.round(position.y + dy);
-		position = new Point(x, y);
+		position = new Point(x, y);s
+		collisionArea.setLocation(position.x - img.getWidth() / 2 + 10, position.y - img.getHeight() / 2 + 10);
 		hasMoved = true;
 	}
 
@@ -95,6 +98,18 @@ public abstract class Entity {
 		
 		// RESIZE ONCE
 	}
+	
+	public boolean doesColide(Entity e)
+	{
+		if(collisionArea.intersects(e.collisionArea))
+		{
+			collides(e);
+			e.collides(this);
+		}
+		return false;
+	}
+	
+	public abstract void collides(Entity e);
 
 	public void setOrientation(double orientation) {
 		this.orientation = orientation;

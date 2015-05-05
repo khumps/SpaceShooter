@@ -65,6 +65,7 @@ public class Screen extends JPanel {
 		for(int i = 0; i < entities.size(); i++)
 		{
 			Entity e = entities.get(i);
+			if(e == null) entities.remove(i);
 			if(!(e instanceof PlayerShip))
 			if(!getBounds().contains(e.getPosition().x, e.getPosition().y))
 				entities.remove(i);	
