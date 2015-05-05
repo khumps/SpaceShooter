@@ -9,7 +9,8 @@ import java.util.HashSet;
 public class Listener extends MouseAdapter implements KeyListener,
 		ActionListener {
 	private HashSet<Integer> keys = new HashSet<Integer>();
-	Point mousePosition = new Point(1,1);
+	Point mousePosition = new Point(1, 1);
+	private boolean mousePressed = false;
 	Screen screen;
 
 	public Listener(Screen s) {
@@ -41,34 +42,34 @@ public class Listener extends MouseAdapter implements KeyListener,
 		if (keys.contains(KeyEvent.VK_LEFT)) {
 
 			if (keys.contains(KeyEvent.VK_UP))
-				screen.player.setOrientation(Math.toRadians(-135));
+				screen.player.setOrientation(Entity.UP_LEFT);
 			else if (keys.contains(KeyEvent.VK_DOWN))
-				screen.player.setOrientation(Math.toRadians(135));
+				screen.player.setOrientation(Entity.DOWN_LEFT);
 			else
-				screen.player.setOrientation(Math.toRadians(-180));
+				screen.player.setOrientation(Entity.LEFT);
 
 		} else if (keys.contains(KeyEvent.VK_RIGHT)) {
 
 			// System.out.println("Right");
 			if (keys.contains(KeyEvent.VK_DOWN)) {
-				screen.player.setOrientation(Math.toRadians(45));
+				screen.player.setOrientation(Entity.DOWN_RIGHT);
 				// System.out.println("Right-Down");
 			} else if (keys.contains(KeyEvent.VK_UP)) {
-				screen.player.setOrientation(Math.toRadians(-45));
+				screen.player.setOrientation(Entity.UP_RIGHT);
 				// System.out.println("Right-Up");
 			} else
-				screen.player.setOrientation(0);
+				screen.player.setOrientation(Entity.RIGHT);
 		}
 
 		else if (keys.contains(KeyEvent.VK_UP)) {
-			screen.player.setOrientation(Math.toRadians(-90));
+			screen.player.setOrientation(Entity.UP);
 			// System.out.println("RAN");
 		} else if (keys.contains(KeyEvent.VK_DOWN)) {
 			// System.out.println("RAN");
-			screen.player.setOrientation(Math.toRadians(90));
+			screen.player.setOrientation(Entity.DOWN);
 		}
 		if (keys.size() > 0)
-			screen.player.move(1);
+			screen.player.move(PlayerShip.PLAYER_VELOCITY);
 	}
 
 	@Override
@@ -76,12 +77,17 @@ public class Listener extends MouseAdapter implements KeyListener,
 		String command = e.getActionCommand();
 
 		if (command.equals("timer")) {
-			act();
 			screen.tick();
-			if(screen.player.hasMoved())
-			{
-			screen.player.moveTurret(mousePosition);
-			screen.player.update();
+			screen.tickNum++;
+			if (mousePressed) {
+				
+				screen.player.fire(screen.tickNum);
+			}
+			act();
+
+			if (screen.player.hasMoved()) {
+				screen.player.moveTurret(mousePosition);
+				screen.player.update();
 			}
 			screen.repaint();
 		}
@@ -92,10 +98,23 @@ public class Listener extends MouseAdapter implements KeyListener,
 		mousePosition = new Point(e.getX(), e.getY());
 		screen.player.moveTurret(mousePosition);
 	}
-	
-	public void mouseClicked(MouseEvent e)
-	{
-		screen.player.fire();
+
+	public void mouseClicked(MouseEvent e) {
+
+	}
+
+	public void mousePressed(MouseEvent e) {
+		mousePressed = true;
+	}
+
+	public void mouseReleased(MouseEvent e) {
+		mousePressed = false;
+	}
+
+	public void mouseDragged(MouseEvent e) {
+		mousePosition = new Point(e.getX(), e.getY());
+		screen.player.moveTurret(mousePosition);
+		screen.player.fire(screen.tickNum);
 	}
 
 }

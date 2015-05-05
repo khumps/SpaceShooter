@@ -1,3 +1,4 @@
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 public class Projectile extends Entity {
@@ -7,18 +8,19 @@ public class Projectile extends Entity {
 	public static final Projectile TORPEDO_PROJECTILE = new Projectile(
 			Utils.loadImage("torpedo.png"), new Point(1, 1), 10,
 			TORPEDO_DAMAGE, TORPEDO_VELOCITY);
+	private static final Rectangle TORPEDO_COLISION = new Rectangle(31,99,169,58);
 	protected final int damage;
 	protected final int velocity;
 
 	public Projectile(BufferedImage img, Point location, double orientation,
 			int damage, int velocity) {
-		super(Utils.rotate(img, Math.toRadians(90)), orientation, location);
+		super(Utils.rotate(img, Math.toRadians(90)), orientation, location, TORPEDO_COLISION);
 
 		this.damage = damage;
 		this.velocity = velocity;
 	}
 
-	public void update() {
+	public void update(int tickNum) {
 		move(velocity);
 	}
 

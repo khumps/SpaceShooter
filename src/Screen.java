@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -12,7 +13,8 @@ import javax.swing.Timer;
 public class Screen extends JPanel {
 	protected ArrayList<Entity> entities = new ArrayList<Entity>();
 	private Listener listener = new Listener(this);
-	Timer timer = new Timer(1, listener);
+	protected int tickNum = 0;
+	Timer timer = new Timer(20, listener);
 	int i = 0;
 	protected Point playerMovement = new Point(0,0);
 	protected PlayerShip player = new PlayerShip(new Point(500, 500), this);
@@ -41,12 +43,20 @@ public class Screen extends JPanel {
 		}
 		for (int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
-			e.update();
+			e.update(tickNum);
 			purgeEntities();
-/*			if (e instanceof Projectile)
-				e.drawProjectile(g2, corner, player);
-			else*/
+			if (e instanceof Projectile)
+			{
+				g2.setColor(Color.BLACK);
+				e.drawProjectile(g2, corner);
+			}
+			else
+			{
 				e.draw(g2, corner);
+				g2.setColor(Color.GREEN);
+				g2.draw(e.collisionArea);
+				}
+			
 		}
 	}
 	
@@ -63,9 +73,9 @@ public class Screen extends JPanel {
 	
 	public void tick()
 	{
-		Double r = Math.random() * 100;
-		if(r / 10 == 10)
+		if(tickNum / 20 == 0)
 			entities.add(new EnemyShip(pointOnScreen(),this));
+		repaint();
 	}
 	
 	public Point pointOnScreen()

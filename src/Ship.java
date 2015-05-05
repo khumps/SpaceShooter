@@ -1,4 +1,5 @@
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -11,8 +12,8 @@ public abstract class Ship extends Entity {
 	
 	
 
-	public Ship(BufferedImage img, Point location, int health, Turret turret, Screen screen) {
-		super(img,Math.toRadians((Math.random() * 360)),location);
+	public Ship(BufferedImage img, Point location, int health, Turret turret,Rectangle colision, Screen screen) {
+		super(img,Math.toRadians((Math.random() * 360)),location, colision);
 		this.turret = turret;
 		this.health = health;
 		this.screen = screen;
@@ -37,9 +38,9 @@ public abstract class Ship extends Entity {
 		turret.draw(g, corner);
 	}
 	
-	public void fire()
+	public void fire(int tickNum)
 	{
-		System.out.println("FIRE");
+		if(tickNum % turret.fireRate == 0)
 		screen.entities.add(new Projectile(turret.projectile.img, getPosition(),turret.projectile.getOrientation(), turret.projectile.damage, Projectile.TORPEDO_VELOCITY));
 	}
 

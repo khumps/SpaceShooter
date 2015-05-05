@@ -3,11 +3,13 @@ import java.awt.image.BufferedImage;
 
 public class Turret extends Entity {
 	protected Projectile projectile;
+	protected final int fireRate;
 	public static final BufferedImage TURRET_IMAGE = Utils.loadImage("turret.png");
 
 	public Turret(BufferedImage img, double orientation, int fireRate, Projectile projectile) {
-		super(img, orientation, null);
+		super(img, orientation, new Point(100,100), null);
 		this.projectile = projectile;
+		this.fireRate = fireRate;
 		
 	}
 	
@@ -27,6 +29,12 @@ public class Turret extends Entity {
 	
 	public void update()
 	{
+		
+	}
+
+	@Override
+	public void update(int tickNum) {
+		// TODO Auto-generated method stub
 		
 	}
 
