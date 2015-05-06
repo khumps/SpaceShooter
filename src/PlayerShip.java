@@ -3,7 +3,7 @@ import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
 
 public class PlayerShip extends Ship {
-	private static final int DAMAGE = 1000;
+	private static final int DAMAGE = 500;
 	private static final int INITIAL_HEALTH = 1000;
 	private static final BufferedImage PLAYER_SHIP_IMAGE = Utils
 			.loadImage("player-ship.png");
@@ -18,9 +18,9 @@ public class PlayerShip extends Ship {
 
 	public PlayerShip(Point location, Screen screen) {
 		super(PLAYER_SHIP_IMAGE, location, INITIAL_HEALTH, new Turret(
-				Utils.loadImage("turret.png"), 10, 1, new Projectile(
-						Utils.loadImage("laser.png"), new Point(1, 1), 10, DAMAGE,
-						10, null, screen), screen), PLAYER_BOUNDS, screen);
+				Utils.loadImage("turret.png"), 10, 10, new Bullet(
+						new Point(1, 1), 10, null, screen), screen),
+				PLAYER_BOUNDS, screen);
 	}
 
 	public void update(int tickNum) {

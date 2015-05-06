@@ -42,4 +42,10 @@ public class Turret extends Entity {
 		
 	}
 
+	@Override
+	public boolean doesCollide(Entity e)  {
+		return false;
+		}
+
+
 }

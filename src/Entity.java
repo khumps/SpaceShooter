@@ -104,14 +104,7 @@ public abstract class Entity {
 		// RESIZE ONCE
 	}
 
-	public boolean doesColide(Entity e) {
-		if (this.collisionArea.intersects(e.collisionArea)) {
-			collides(e);
-			e.collides(this);
-			return true;
-		}
-		return false;
-	}
+	public abstract boolean doesCollide(Entity e);
 
 	public abstract void collides(Entity e);
 

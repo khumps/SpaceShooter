@@ -95,7 +95,7 @@ public class Listener extends MouseAdapter implements KeyListener,
 			Long start = System.nanoTime();
 			screen.repaint();
 			Long end = System.nanoTime();
-			System.out.println(end - start);
+			//System.out.println(end - start);
 		}
 
 	}
