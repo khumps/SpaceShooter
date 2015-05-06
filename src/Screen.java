@@ -20,6 +20,7 @@ public class Screen extends JPanel {
 	protected PlayerShip player = new PlayerShip(new Point(500, 500), this);
 	private BufferedImage background = Utils.loadImage("space.png");
 	private Graphics2D g2;
+	protected boolean debug = false;
 
 	public Screen() {
 		addKeyListener(listener);
@@ -42,6 +43,7 @@ public class Screen extends JPanel {
 				g.drawImage(background, i, j, null);
 			}
 		}
+		/* Draw Entities*/
 		for (int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
 			e.update(tickNum);
@@ -49,11 +51,20 @@ public class Screen extends JPanel {
 
 				g2.setColor(Color.BLACK);
 				e.drawProjectile(g2, corner);
+				if(debug)
+				{
+					g2.setColor(Color.GREEN);
+					g2.draw(e.collisionArea.getArea());
+					g.drawString(tickNum + "", 500, 500);
+				}
 			} else {
 				e.draw(g2, corner);
+				if(debug)
+				{
 				g2.setColor(Color.GREEN);
 				g2.draw(e.collisionArea.getArea());
 				g.drawString(tickNum + "", 500, 500);
+				}
 			}
 
 		}

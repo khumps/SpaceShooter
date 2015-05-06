@@ -20,16 +20,22 @@ public class Listener extends MouseAdapter implements KeyListener,
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		int c = e.getKeyCode();
-		keys.add(c);
-		act();
+		if (e.getKeyCode() == KeyEvent.VK_F3) {
+			if (screen.debug)
+				screen.debug = false;
+			else
+				screen.debug = true;
+
+		} else {
+			int c = e.getKeyCode();
+			keys.add(c);
+		}
 		screen.repaint();
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		int c = e.getKeyCode();
-		act();
 		keys.remove(c);
 	}
 
@@ -78,7 +84,7 @@ public class Listener extends MouseAdapter implements KeyListener,
 			act();
 			if (keys.size() > 0)
 				screen.player.move(PlayerShip.PLAYER_VELOCITY);
-			// screen.player.update();
+			screen.player.update();
 			screen.player.moveTurret(mousePosition);
 
 			screen.tick(screen.tickNum++);
