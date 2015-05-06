@@ -105,7 +105,7 @@ public abstract class Entity {
 	}
 
 	public boolean doesColide(Entity e) {
-		if (collisionArea.intersects(e.collisionArea)) {
+		if (this.collisionArea.intersects(e.collisionArea)) {
 			collides(e);
 			e.collides(this);
 			return true;

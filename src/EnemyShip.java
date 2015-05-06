@@ -6,16 +6,14 @@ public class EnemyShip extends Ship {
 	private static final int INITIAL_HEALTH = 200;
 	private static final BufferedImage ENEMY_SHIP_IMAGE = Utils
 			.loadImage("bomber.png");
-	private static final Bounds ENEMY_BOUNDS = new Bounds(new Rectangle(16, 16,
-			104, 28), new Rectangle(16, 100, 104, 28), new Rectangle(16, 44,
-			64, 56));
 
 	public EnemyShip(Point point, Screen screen) {
 		super(ENEMY_SHIP_IMAGE, point, INITIAL_HEALTH, new Turret(
 				Turret.TURRET_IMAGE, 10, 20, new Projectile(
-						Utils.loadImage("torpedo.png"), new Point(1, 1), 10,
-						1, Projectile.TORPEDO_VELOCITY,
-						null, screen), screen), ENEMY_BOUNDS, screen);
+						Utils.loadImage("torpedo.png"), new Point(1, 1), 10, 1,
+						Projectile.TORPEDO_VELOCITY, null, screen), screen),
+				new Bounds(new Rectangle(16, 16, 104, 28), new Rectangle(16,
+						100, 104, 28), new Rectangle(16, 44, 64, 56)), screen);
 	}
 
 	public void update(int tickNum) {
@@ -24,7 +22,7 @@ public class EnemyShip extends Ship {
 		double orientation = Utils.getAngle(getPosition(),
 				screen.player.getPosition());
 		moveTurret(orientation);
-		fire(tickNum);
+		// fire(tickNum);
 		if (tickNum % 20 == 0) {
 			if (tickNum % 100 == 0)
 				if (Math.sqrt(((getPosition().x - screen.player.getPosition().x) * (getPosition().x - screen.player

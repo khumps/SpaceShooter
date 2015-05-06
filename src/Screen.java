@@ -74,10 +74,9 @@ public class Screen extends JPanel {
 		checkCollision();
 		if (tickNum % 10 == 0)
 			purgeEntities();
-		if (tickNum % 30 == 0 && getNumShips() < 5) {
+		if (tickNum % 30 == 0 && getNumShips() < 5)
 			entities.add(new EnemyShip(pointOnScreen(), this));
-			repaint();
-		}
+		System.out.println(entities.size());
 	}
 
 	public void checkCollision() {
@@ -86,7 +85,7 @@ public class Screen extends JPanel {
 			if (e1 instanceof Ship)
 				for (int j = 1; j < entities.size(); j++) {
 					Entity e2 = entities.get(j);
-					if (e1.doesColide(e2) && g2 != null)
+					if (e1 != e2 && e1.doesColide(e2) && g2 != null)
 						g2.drawRect(e1.getPosition().x, e2.getPosition().y, 20,
 								20);
 				}

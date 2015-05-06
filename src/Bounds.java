@@ -16,6 +16,13 @@ public class Bounds {
 		Rectangle r = area.getBounds();
 		center = new Point(r.getCenterX(), r.getCenterY());
 	}
+	
+	public Bounds(Bounds b)
+	{
+		this.center = b.center;
+		this.area = b.area;
+		this.angle = b.angle;
+	}
 
 	public Point getCenter() {
 		return center;
