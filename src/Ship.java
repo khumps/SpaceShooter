@@ -6,12 +6,15 @@ import java.awt.image.BufferedImage;
 
 public abstract class Ship extends Entity {
 	private int health;
+	private final int maxHealth;
 	protected Turret turret;
+
 	public Ship(BufferedImage img, Point location, int health, Turret turret,
-			Rectangle colision, Screen screen) {
-		super(img, Math.toRadians((Math.random() * 360)), location, colision, screen);
+			Bounds b, Screen screen) {
+		super(img, Math.toRadians((Math.random() * 360)), location, b, screen);
 		this.turret = turret;
 		this.health = health;
+		maxHealth = health;
 		turret.setPosition(super.getPosition());
 		screen.entities.add(this);
 	}
@@ -22,6 +25,10 @@ public abstract class Ship extends Entity {
 
 	public void moveTurret(Point mouse) {
 		turret.setOrientation(Utils.getAngle(getPosition(), mouse));
+	}
+
+	public void moveTurret(double orientation) {
+		turret.setOrientation(orientation);
 	}
 
 	public void draw(Graphics2D g, Point corner) {
@@ -38,14 +45,26 @@ public abstract class Ship extends Entity {
 		if (tickNum % turret.fireRate == 0)
 			screen.entities.add(new Projectile(turret.projectile.img,
 					getPosition(), turret.projectile.getOrientation(),
-					turret.projectile.damage, Projectile.TORPEDO_VELOCITY,
+					turret.projectile.damage, turret.projectile.velocity, this,
 					screen));
 	}
 
 	public void takeDamage(int damage) {
 		health -= damage;
-		if (health <= 0)
+		if (health <= 0) {
 			remove();
+		}
+		screen.repaint();
+	}
+
+	public abstract boolean isEnemy(Ship s);
+
+	public int getHealth() {
+		return health;
+	}
+
+	public int getMaxHealth() {
+		return maxHealth;
 	}
 
 }

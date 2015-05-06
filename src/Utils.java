@@ -1,4 +1,6 @@
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -30,5 +32,13 @@ public class Utils {
 		AffineTransformOp op = new AffineTransformOp(tx,
 				AffineTransformOp.TYPE_BILINEAR);
 		return op.filter(img, null);
+	}
+	
+	public static Area createArea(Shape... shape)
+	{
+		Area a = new Area();
+		for(Shape s: shape)
+			a.add(new Area(s));
+		return a;
 	}
 }

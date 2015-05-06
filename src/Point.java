@@ -36,5 +36,10 @@ public final class Point {
 	{
 		return "(" + x + "," + y + ")";	
 	}
+	
+	public Point translate(double dx, double dy)
+	{
+		return new Point((int)(x + dx), (int)(y + dy));
+	}
 
 }

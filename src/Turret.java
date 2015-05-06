@@ -1,4 +1,5 @@
 import java.awt.Rectangle;
+import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 
 
@@ -8,7 +9,7 @@ public class Turret extends Entity {
 	public static final BufferedImage TURRET_IMAGE = Utils.loadImage("turret.png");
 
 	public Turret(BufferedImage img, double orientation, int fireRate, Projectile projectile, Screen screen) {
-		super(img, orientation, new Point(100,100), new Rectangle(1,1,1,1), screen);
+		super(img, orientation, new Point(100,100), new Bounds(new Area(Projectile.TORPEDO_COLISION)), screen);
 		this.projectile = projectile;
 		this.fireRate = fireRate;
 		

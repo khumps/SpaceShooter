@@ -70,6 +70,8 @@ public class Listener extends MouseAdapter implements KeyListener,
 		}
 		if (keys.size() > 0)
 			screen.player.move(PlayerShip.PLAYER_VELOCITY);
+		screen.player.update();
+		screen.player.moveTurret(mousePosition);
 	}
 
 	@Override
@@ -77,21 +79,15 @@ public class Listener extends MouseAdapter implements KeyListener,
 		String command = e.getActionCommand();
 
 		if (command.equals("timer")) {
-			screen.tick();
-			screen.tickNum++;
+			screen.tick(screen.tickNum++);
 			if (mousePressed) {
 				
 				screen.player.fire(screen.tickNum);
 			}
 			act();
-
-			if (screen.player.hasMoved()) {
-				screen.player.moveTurret(mousePosition);
-				screen.player.update();
+				
 			}
 			screen.repaint();
-		}
-
 	}
 
 	public void mouseMoved(MouseEvent e) {

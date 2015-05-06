@@ -6,7 +6,6 @@ import java.awt.geom.Area;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
-
 public abstract class Entity {
 	public static final double UP = Math.toRadians(-90);
 	public static final double UP_RIGHT = Math.toRadians(-45);
@@ -20,21 +19,23 @@ public abstract class Entity {
 	protected BufferedImage img;
 	private double orientation;
 	private Point position;
+	private Point corner;
 	private boolean hasMoved;
 	protected Bounds collisionArea;
-	public final int BULLET_SIZE = 50;
+	public final int BULLET_SIZE = 35;
 	protected Screen screen;
 
-	public Entity(BufferedImage img, double orientation, Point location, Rectangle collision, Screen screen) {
-		if(location == null)
-			position = new Point(100,10);
+	public Entity(BufferedImage img, double orientation, Point location,
+			Bounds b, Screen screen) {
+		if (location == null)
+			position = new Point(100, 10);
 		this.position = location;
 		this.screen = screen;
 		this.img = img;
 		this.origImg = img;
 		this.orientation = orientation;
-		collisionArea.area.
-		//setLocation(position.x - img.getWidth() / 2, position.y - img.getHeight() / 2);
+		collisionArea = b;
+		collisionArea.setCenter(location);
 	}
 
 	public void move(double distance) {
@@ -42,11 +43,12 @@ public abstract class Entity {
 		double sin = Math.sin(orientation);
 		double dx = distance * cos;
 		double dy = distance * sin;
-		double x = Math.round(position.x + dx);
-		double y = Math.round(position.y + dy);
-		position = new Point(x, y);s
-		collisionArea.setLocation(position.x - img.getWidth() / 2 + 10, position.y - img.getHeight() / 2 + 10);
+		double x = position.x + dx + .5;
+		double y = position.y + dy + .5;
+		position = new Point(x, y);
 		hasMoved = true;
+		collisionArea.setCenter(position);
+
 	}
 
 	public Point getPosition() {
@@ -55,6 +57,7 @@ public abstract class Entity {
 
 	public void setPosition(Point location) {
 		this.position = location;
+
 	}
 
 	public double getOrientation() {
@@ -76,17 +79,19 @@ public abstract class Entity {
 		int x = (int) (position.x - corner.x - img.getWidth() / 2);
 		int y = (int) (position.y - corner.y - img.getHeight() / 2);
 		AffineTransform tx = AffineTransform.getRotateInstance(orientation,
-				img.getWidth() / 2, Math.round(img.getHeight() / 2));
+				img.getWidth() / 2, img.getHeight() / 2);
 		AffineTransformOp op = new AffineTransformOp(tx,
 				AffineTransformOp.TYPE_BILINEAR);
 		g.drawImage(op.filter(origImg, null), x, y, null);
+
 	}
 
 	public void drawProjectile(Graphics2D g, Point corner) {
 		int x = (int) (position.x - corner.x - img.getWidth() / 2);
 		int y = (int) (position.y - corner.y - img.getHeight() / 2);
+		
 		AffineTransform tx = AffineTransform.getRotateInstance(orientation,
-				img.getWidth() / 2, Math.round(img.getHeight() / 2));
+				img.getWidth() / 2, img.getHeight() / 2);
 		AffineTransformOp op = new AffineTransformOp(tx,
 				AffineTransformOp.TYPE_BILINEAR);
 		/*
@@ -95,24 +100,24 @@ public abstract class Entity {
 		 */
 		g.drawImage(op.filter(origImg, null), position.x - (BULLET_SIZE / 2),
 				position.y - (BULLET_SIZE / 2), BULLET_SIZE, BULLET_SIZE, null);
-		
+
 		// RESIZE ONCE
 	}
-	
-	public boolean doesColide(Entity e)
-	{
-		if(collisionArea.intersects(e.collisionArea))
-		{
+
+	public boolean doesColide(Entity e) {
+		if (collisionArea.intersects(e.collisionArea)) {
 			collides(e);
 			e.collides(this);
+			return true;
 		}
 		return false;
 	}
-	
+
 	public abstract void collides(Entity e);
 
 	public void setOrientation(double orientation) {
 		this.orientation = orientation;
+		collisionArea.setAngle(orientation);
 	}
 
 }
