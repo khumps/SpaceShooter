@@ -10,4 +10,16 @@ public class Bullet extends Projectile {
 				VELOCITY, source, new Bounds(new Rectangle(4, 4, 1, 1)), /*new Explosion(),*/ screen);
 	}
 
+	public void collides(Entity e) {
+		if (e != source /* && !(e instanceof PlayerShip) */)
+			if (e instanceof Ship) {
+				if (source.isEnemy((Ship) e)) {
+					((Ship) e).takeDamage(damage);
+					//effect.drawEffect(screen.getGraphics(), this.getPosition());
+					screen.entities.remove(this);
+				}
+			}
+
+	}
+
 }

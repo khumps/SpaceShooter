@@ -20,11 +20,10 @@ public class Screen extends JPanel {
 	protected Point playerMovement = new Point(0, 0);
 	protected PlayerShip player = new PlayerShip(new Point(500, 500), this);
 	private BufferedImage background = Utils.loadImage("space.png");
-	private Graphics2D g2;
+	protected Graphics2D g2;
 	protected boolean debug = false;
 	private boolean isFullscreen = true;
 	private JFrame frame = new JFrame();
-
 
 	public Screen() {
 
@@ -64,11 +63,11 @@ public class Screen extends JPanel {
 			e.update(tickNum);
 			e.draw(g2, corner);
 
-			if (debug){
+			if (debug) {
 				drawHitBox(g2, e);
 				timer.setDelay(timerSpeed * 2);
-			}
-			else timer.setDelay(timerSpeed);
+			} else
+				timer.setDelay(timerSpeed);
 		}
 
 		g.drawString(tickNum + "", 500, 500);
@@ -85,11 +84,6 @@ public class Screen extends JPanel {
 				}
 		}
 	}
-	
-/*	public Graphics2D getGraphics()
-	{
-		return g2;
-	}*/
 
 	public void tick(int tickNum) {
 		System.out.println("test");
@@ -134,8 +128,7 @@ public class Screen extends JPanel {
 	}
 
 	public void drawHitBox(Graphics2D g, Entity e) {
-		if (debug)
-		{
+		if (debug) {
 			g.setColor(Color.GREEN);
 			g2.draw(e.collisionArea.getArea());
 		}
