@@ -8,6 +8,7 @@ public abstract class Ship extends Entity {
 	private int health;
 	private final int maxHealth;
 	protected Turret turret;
+	private boolean isAlive = true;
 
 	public Ship(BufferedImage img, Point location, int health, Turret turret,
 			Bounds b, Screen screen) {
@@ -42,16 +43,17 @@ public abstract class Ship extends Entity {
 	}
 
 	public void fire(int tickNum) {
-		if (tickNum % turret.fireRate == 0)
+		if (isAlive && tickNum % turret.fireRate == 0)
 			screen.entities.add(new Projectile(turret.projectile.img,
 					getPosition(), turret.projectile.getOrientation(),
 					turret.projectile.damage, turret.projectile.velocity, this,
-					new Bounds(turret.projectile.collisionArea.getArea()), screen));
+					new Bounds(turret.projectile.collisionArea.getArea()),/* null,*/ screen));
 	}
 
 	public void takeDamage(int damage) {
 		health -= damage;
 		if (health <= 0) {
+			isAlive = false;
 			remove();
 		}
 		screen.repaint();
@@ -71,6 +73,7 @@ public abstract class Ship extends Entity {
 	public boolean doesCollide(Entity e)
 	{
 		 {
+			 if(e.collisionArea != null)
 				if (this.collisionArea.intersects(e.collisionArea)) {
 					collides(e);
 					e.collides(this);

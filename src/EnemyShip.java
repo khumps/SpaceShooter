@@ -6,7 +6,6 @@ public class EnemyShip extends Ship {
 	private static final int INITIAL_HEALTH = 200;
 	private static final BufferedImage ENEMY_SHIP_IMAGE = Utils
 			.loadImage("bomber.png");
-	private static int DAMAGE = 25;
 
 	public EnemyShip(Point point, Screen screen) {
 		super(ENEMY_SHIP_IMAGE, point, INITIAL_HEALTH, new Turret(
@@ -14,6 +13,7 @@ public class EnemyShip extends Ship {
 						new Point(1, 1), 10, null, screen), screen),
 				new Bounds(new Rectangle(16, 16, 104, 28), new Rectangle(16,
 						100, 104, 28), new Rectangle(16, 44, 64, 56)), screen);
+		turret.projectile.setDamage(10);
 	}
 
 	public void update(int tickNum) {

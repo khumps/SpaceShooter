@@ -7,8 +7,9 @@ public class PlayerShip extends Ship {
 	private static final int INITIAL_HEALTH = 1000;
 	private static final BufferedImage PLAYER_SHIP_IMAGE = Utils
 			.loadImage("player-ship.png");
-	// private final Rectangle PLAYER_COLISION;
+	private static final int FIRE_RATE = 5;
 	public static final int PLAYER_VELOCITY = 15;
+	private boolean isAlive = true;
 	private static final Bounds PLAYER_BOUNDS = new Bounds(new Rectangle(104,
 			64, 28, 16), new Rectangle(96, 60, 8, 24), new Rectangle(72, 36,
 			24, 72), new Rectangle(56, 32, 16, 80),
@@ -18,7 +19,7 @@ public class PlayerShip extends Ship {
 
 	public PlayerShip(Point location, Screen screen) {
 		super(PLAYER_SHIP_IMAGE, location, INITIAL_HEALTH, new Turret(
-				Utils.loadImage("turret.png"), 10, 10, new Bullet(
+				Utils.loadImage("turret.png"), 10, FIRE_RATE, new Bullet(
 						new Point(1, 1), 10, null, screen), screen),
 				PLAYER_BOUNDS, screen);
 	}

@@ -14,15 +14,21 @@ public class Screen extends JPanel {
 	protected ArrayList<Entity> entities = new ArrayList<Entity>();
 	private Listener listener = new Listener(this);
 	protected int tickNum = 0;
-	Timer timer = new Timer(20, listener);
+	private int timerSpeed = 16;
+	Timer timer = new Timer(timerSpeed, listener);
 	int i = 0;
 	protected Point playerMovement = new Point(0, 0);
 	protected PlayerShip player = new PlayerShip(new Point(500, 500), this);
 	private BufferedImage background = Utils.loadImage("space.png");
 	private Graphics2D g2;
 	protected boolean debug = false;
+	private boolean isFullscreen = true;
+	private JFrame frame = new JFrame();
+
 
 	public Screen() {
+
+		frame.add(this);
 		addKeyListener(listener);
 		addMouseListener(listener);
 		addMouseMotionListener(listener);
@@ -32,10 +38,19 @@ public class Screen extends JPanel {
 		timer.setActionCommand("timer");
 		timer.start();
 		setVisible(true);
+		frame.setUndecorated(isFullscreen);
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		// frame.pack();
 	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		/*
+		 * if (isFullscreen) {
+		 * 
+		 * frame.setUndecorated(isFullscreen); }
+		 */
 		g2 = (Graphics2D) g;
 		Point corner = new Point(getBounds().x, getBounds().y);
 		for (int i = 0; i < getWidth(); i += background.getWidth()) {
@@ -43,32 +58,22 @@ public class Screen extends JPanel {
 				g.drawImage(background, i, j, null);
 			}
 		}
-		/* Draw Entities*/
+		/* Draw Entities */
 		for (int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
 			e.update(tickNum);
-			if (e instanceof Projectile) {
+			e.draw(g2, corner);
 
-				g2.setColor(Color.BLACK);
-				e.drawProjectile(g2, corner);
-				if(debug)
-				{
-					g2.setColor(Color.GREEN);
-					g2.draw(e.collisionArea.getArea());
-					g.drawString(tickNum + "", 500, 500);
-				}
-			} else {
-				e.draw(g2, corner);
-				if(debug)
-				{
-				g2.setColor(Color.GREEN);
-				g2.draw(e.collisionArea.getArea());
-				g.drawString(tickNum + "", 500, 500);
-				}
+			if (debug){
+				drawHitBox(g2, e);
+				timer.setDelay(timerSpeed * 2);
 			}
-
+			else timer.setDelay(timerSpeed);
 		}
-		drawHealth(g);
+
+		g.drawString(tickNum + "", 500, 500);
+
+		drawHealth(g2);
 	}
 
 	public void purgeEntities() {
@@ -80,8 +85,14 @@ public class Screen extends JPanel {
 				}
 		}
 	}
+	
+	public Graphics2D getGraphics()
+	{
+		return g2;
+	}
 
 	public void tick(int tickNum) {
+		System.out.println("test");
 		checkCollision();
 		if (tickNum % 10 == 0)
 			purgeEntities();
@@ -95,9 +106,7 @@ public class Screen extends JPanel {
 			if (e1 instanceof Ship)
 				for (int j = 1; j < entities.size(); j++) {
 					Entity e2 = entities.get(j);
-					if (e1 != e2 && e1.doesCollide(e2) && g2 != null)
-						g2.drawRect(e1.getPosition().x, e2.getPosition().y, 20,
-								20);
+					e1.doesCollide(e2);
 				}
 		}
 	}
@@ -116,12 +125,20 @@ public class Screen extends JPanel {
 				* getHeight());
 	}
 
-	public void drawHealth(Graphics g) {
+	public void drawHealth(Graphics2D g) {
 		g.setColor(Color.GREEN);
 		g.drawRect(20, getHeight() - getHeight() / 15,
 				player.getMaxHealth() / 2, 10);
 		g.fillRect(20, getHeight() - getHeight() / 15, player.getHealth() / 2,
 				10);
+	}
+
+	public void drawHitBox(Graphics2D g, Entity e) {
+		if (debug)
+		{
+			g.setColor(Color.GREEN);
+			g2.draw(e.collisionArea.getArea());
+		}
 	}
 
 	public static void main(String[] args) {
