@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -22,9 +23,11 @@ public class Screen extends JPanel {
 	private BufferedImage background = Utils.loadImage("space.png");
 	protected Graphics2D g2;
 	protected boolean debug = false;
-	private boolean isFullscreen = true;
+	protected boolean isFullscreen = false;
 	private JFrame frame = new JFrame();
 	protected int score = 0;
+	private Rectangle oldBounds;
+	private int oldState;
 
 	public Screen() {
 
@@ -33,19 +36,16 @@ public class Screen extends JPanel {
 		addMouseListener(listener);
 		addMouseMotionListener(listener);
 		setFocusable(true);
-		setPreferredSize(new Dimension(1000, 1000));
+		setPreferredSize(new Dimension(750, 750));
 		entities.add(player);
 		timer.setActionCommand("timer");
 		timer.start();
-		setVisible(true);
-		frame.setUndecorated(isFullscreen);
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		// frame.pack();
+		frame.pack();
+		frame.setVisible(true);
 	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		/*
 		 * if (isFullscreen) {
 		 * 
@@ -63,12 +63,12 @@ public class Screen extends JPanel {
 			Entity e = entities.get(i);
 			e.update(tickNum);
 			e.draw(g2, corner);
-/*			if(e instanceof Projectile && ((Projectile) e).collided == true)
-			{
-				((Projectile) e).effect.drawEffect(g2, e.getPosition());
-			}*/
-			if(e instanceof EnemyShip)
-				drawHealth(g2, (Ship)e);
+			/*
+			 * if(e instanceof Projectile && ((Projectile) e).collided == true)
+			 * { ((Projectile) e).effect.drawEffect(g2, e.getPosition()); }
+			 */
+			if (e instanceof EnemyShip)
+				drawHealth(g2, (Ship) e);
 
 			if (debug) {
 				drawHitBox(g2, e);
@@ -97,7 +97,7 @@ public class Screen extends JPanel {
 		if (tickNum % 10 == 0)
 			purgeEntities();
 		if (tickNum % 30 == 0 && getNumShips() < 5)
-			entities.add(new EnemyShip(pointOnScreen(), 100, this));
+			entities.add(new EnemyShip(pointOnScreen(), 1, this));
 	}
 
 	public void checkCollision() {
@@ -132,12 +132,15 @@ public class Screen extends JPanel {
 		g.fillRect(20, getHeight() - getHeight() / 15, player.getHealth() / 2,
 				15);
 	}
-	
-	public void drawHealth(Graphics2D g, Ship s)
-	{
-		g.setColor(Color.RED);
-		g.drawRect(s.getPosition().x, s.getPosition().y - s.img.getHeight() / 2, s.getMaxHealth() / 3, 10);
-		g.fillRect(s.getPosition().x, s.getPosition().y - s.img.getHeight() / 2, s.getHealth() / 3, 10);
+
+	public void drawHealth(Graphics2D g, Ship s) {
+		if (s.getHealth() < s.getMaxHealth()) {
+			g.setColor(Color.RED);
+			g.drawRect(s.getPosition().x, s.getPosition().y - s.img.getHeight()
+					/ 2, s.getMaxHealth() / 3, 10);
+			g.fillRect(s.getPosition().x, s.getPosition().y - s.img.getHeight()
+					/ 2, s.getHealth() / 3, 10);
+		}
 	}
 
 	public void drawHitBox(Graphics2D g, Entity e) {
@@ -146,20 +149,35 @@ public class Screen extends JPanel {
 			g2.draw(e.collisionArea.getArea());
 		}
 	}
-	
-	public void drawHud(Graphics2D g)
-	{
+
+	public void drawHud(Graphics2D g) {
 		drawPlayerHealth(g);
 		g.drawRect(50, 50, 100, 20);
 		g.drawString("Score: " + score, 55, 65);
 	}
+	
+	protected void enableFullscreen()
+	{
+		oldBounds = frame.getBounds();
+		oldState = frame.getExtendedState();
+		frame.dispose();
+		frame.setUndecorated(true);
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		frame.setVisible(true);
+		isFullscreen = true;
+	}
 
+	protected void disableFullscreen()
+	{
+		frame.dispose();
+		frame.setUndecorated(false);
+		frame.setPreferredSize(new Dimension(oldBounds.width,oldBounds.height));
+		frame.pack();
+		frame.setVisible(true);
+		isFullscreen = false;
+	}
 	public static void main(String[] args) {
-		JFrame f = new JFrame();
-		f.add(new Screen());
-		f.setDefaultCloseOperation(f.EXIT_ON_CLOSE);
-		f.pack();
-		f.setVisible(true);
+		new Screen();
 
 	}
 
