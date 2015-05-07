@@ -24,6 +24,7 @@ public class Screen extends JPanel {
 	protected boolean debug = false;
 	private boolean isFullscreen = true;
 	private JFrame frame = new JFrame();
+	protected int score = 0;
 
 	public Screen() {
 
@@ -62,6 +63,12 @@ public class Screen extends JPanel {
 			Entity e = entities.get(i);
 			e.update(tickNum);
 			e.draw(g2, corner);
+/*			if(e instanceof Projectile && ((Projectile) e).collided == true)
+			{
+				((Projectile) e).effect.drawEffect(g2, e.getPosition());
+			}*/
+			if(e instanceof EnemyShip)
+				drawHealth(g2, (Ship)e);
 
 			if (debug) {
 				drawHitBox(g2, e);
@@ -72,7 +79,7 @@ public class Screen extends JPanel {
 
 		g.drawString(tickNum + "", 500, 500);
 
-		drawHealth(g2);
+		drawHud(g2);
 	}
 
 	public void purgeEntities() {
@@ -86,12 +93,11 @@ public class Screen extends JPanel {
 	}
 
 	public void tick(int tickNum) {
-		System.out.println("test");
 		checkCollision();
 		if (tickNum % 10 == 0)
 			purgeEntities();
 		if (tickNum % 30 == 0 && getNumShips() < 5)
-			entities.add(new EnemyShip(pointOnScreen(), this));
+			entities.add(new EnemyShip(pointOnScreen(), 100, this));
 	}
 
 	public void checkCollision() {
@@ -119,12 +125,19 @@ public class Screen extends JPanel {
 				* getHeight());
 	}
 
-	public void drawHealth(Graphics2D g) {
+	public void drawPlayerHealth(Graphics2D g) {
 		g.setColor(Color.GREEN);
 		g.drawRect(20, getHeight() - getHeight() / 15,
-				player.getMaxHealth() / 2, 10);
+				player.getMaxHealth() / 2, 15);
 		g.fillRect(20, getHeight() - getHeight() / 15, player.getHealth() / 2,
-				10);
+				15);
+	}
+	
+	public void drawHealth(Graphics2D g, Ship s)
+	{
+		g.setColor(Color.RED);
+		g.drawRect(s.getPosition().x, s.getPosition().y - s.img.getHeight() / 2, s.getMaxHealth() / 3, 10);
+		g.fillRect(s.getPosition().x, s.getPosition().y - s.img.getHeight() / 2, s.getHealth() / 3, 10);
 	}
 
 	public void drawHitBox(Graphics2D g, Entity e) {
@@ -132,6 +145,13 @@ public class Screen extends JPanel {
 			g.setColor(Color.GREEN);
 			g2.draw(e.collisionArea.getArea());
 		}
+	}
+	
+	public void drawHud(Graphics2D g)
+	{
+		drawPlayerHealth(g);
+		g.drawRect(50, 50, 100, 20);
+		g.drawString("Score: " + score, 55, 65);
 	}
 
 	public static void main(String[] args) {

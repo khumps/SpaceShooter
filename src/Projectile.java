@@ -8,15 +8,18 @@ public class Projectile extends Entity {
 	protected int damage;
 	protected final int velocity;
 	protected Ship source;
+	protected Effect effect;
+	protected boolean collided = false;
 
 	public Projectile(BufferedImage img, Point location, double orientation,
-			int damage, int velocity, Ship source, Bounds bounds, Screen screen) {
+			int damage, int velocity, Ship source, Bounds bounds, Effect effect, Screen screen) {
 		super(Utils.rotate(img, Math.toRadians(0)), orientation, location,
 				bounds, screen);
 
 		this.source = source;
 		this.damage = damage;
 		this.velocity = velocity;
+		this.effect = effect;
 		Utils.resizeProjectile(this);
 	}
 
@@ -29,6 +32,8 @@ public class Projectile extends Entity {
 			if (e instanceof Ship) {
 				if (source.isEnemy((Ship) e)) {
 					((Ship) e).takeDamage(damage);
+					collided = true;
+					//effect.drawEffect(screen.g2, getPosition());
 					screen.entities.remove(this);
 				}
 			}

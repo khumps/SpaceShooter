@@ -6,14 +6,17 @@ public class EnemyShip extends Ship {
 	private static final int INITIAL_HEALTH = 200;
 	private static final BufferedImage ENEMY_SHIP_IMAGE = Utils
 			.loadImage("bomber.png");
+	private final int score = 10;
+	private int scoreModifier;
 
-	public EnemyShip(Point point, Screen screen) {
+	public EnemyShip(Point point, int scoreModifier, Screen screen) {
 		super(ENEMY_SHIP_IMAGE, point, INITIAL_HEALTH, new Turret(
-				Turret.TURRET_IMAGE, 10, 20, new Bullet(
-						new Point(1, 1),0, null, screen), screen),
-				new Bounds(new Rectangle(16, 16, 104, 28), new Rectangle(16,
-						100, 104, 28), new Rectangle(16, 44, 64, 56)), screen);
+				Turret.TURRET_IMAGE, 10, 20, new Bullet(new Point(1, 1), 0,
+						null, screen), screen), new Bounds(new Rectangle(16,
+				16, 104, 28), new Rectangle(16, 100, 104, 28), new Rectangle(
+				16, 44, 64, 56)), screen);
 		turret.projectile.setDamage(10);
+		this.scoreModifier = scoreModifier;
 	}
 
 	public void update(int tickNum) {
@@ -22,7 +25,7 @@ public class EnemyShip extends Ship {
 		double orientation = Utils.getAngle(getPosition(),
 				screen.player.getPosition());
 		moveTurret(orientation);
-		 fire(tickNum);
+		fire(tickNum);
 		if (tickNum % 20 == 0) {
 			if (tickNum % 100 == 0)
 				if (Math.sqrt(((getPosition().x - screen.player.getPosition().x) * (getPosition().x - screen.player
@@ -58,6 +61,11 @@ public class EnemyShip extends Ship {
 	public void collides(Entity e) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void remove() {
+		super.remove();
+		screen.score += score * scoreModifier;
 	}
 
 	@Override

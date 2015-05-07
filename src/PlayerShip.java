@@ -3,7 +3,7 @@ import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
 
 public class PlayerShip extends Ship {
-	private static final int DAMAGE = 500;
+	private static final int DAMAGE = 100;
 	private static final int INITIAL_HEALTH = 1000;
 	private static final BufferedImage PLAYER_SHIP_IMAGE = Utils
 			.loadImage("player-ship.png");

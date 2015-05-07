@@ -47,7 +47,8 @@ public abstract class Ship extends Entity {
 			screen.entities.add(new Projectile(turret.projectile.img,
 					getPosition(), turret.projectile.getOrientation(),
 					turret.projectile.damage, turret.projectile.velocity, this,
-					new Bounds(turret.projectile.collisionArea.getArea()),/* null,*/ screen));
+					new Bounds(turret.projectile.collisionArea.getArea()),
+					turret.projectile.effect, screen));
 	}
 
 	public void takeDamage(int damage) {
@@ -68,19 +69,18 @@ public abstract class Ship extends Entity {
 	public int getMaxHealth() {
 		return maxHealth;
 	}
-	
+
 	@Override
-	public boolean doesCollide(Entity e)
-	{
-		 {
-			 if(e.collisionArea != null)
+	public boolean doesCollide(Entity e) {
+		{
+			if (e.collisionArea != null)
 				if (this.collisionArea.intersects(e.collisionArea)) {
 					collides(e);
 					e.collides(this);
 					return true;
 				}
-				return false;
-			}
+			return false;
+		}
 	}
 
 }
