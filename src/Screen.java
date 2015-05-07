@@ -13,8 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Screen extends JPanel {
-	// protected ArrayList<Entity> entities = new ArrayList<Entity>();\
-	protected LinkedList<Entity> entities = new LinkedList<Entity>();
+	 protected ArrayList<Entity> entities = new ArrayList<Entity>();
 	private Listener listener = new Listener(this);
 	protected int tickNum = 0;
 	private int timerSpeed = 16;
