@@ -1,3 +1,4 @@
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
@@ -7,8 +8,7 @@ public class Bullet extends Projectile {
 
 	public Bullet(Point location, double orientation, Ship source, Screen screen) {
 		super(Utils.loadImage("bullet.png"), location, orientation, DAMAGE,
-				VELOCITY, source, new Bounds(new Rectangle(4, 4, 1, 1)),
-				new Explosion(), screen);
+				VELOCITY, source, new Bounds(new Rectangle(4, 4, 1, 1)), screen);
 	}
 
 }

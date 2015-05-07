@@ -6,13 +6,15 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Screen extends JPanel {
-	protected ArrayList<Entity> entities = new ArrayList<Entity>();
+	// protected ArrayList<Entity> entities = new ArrayList<Entity>();\
+	protected LinkedList<Entity> entities = new LinkedList<Entity>();
 	private Listener listener = new Listener(this);
 	protected int tickNum = 0;
 	private int timerSpeed = 16;
@@ -28,10 +30,12 @@ public class Screen extends JPanel {
 	protected int score = 0;
 	private Rectangle oldBounds;
 	private int oldState;
+	protected boolean paused = false;
 
 	public Screen() {
 
 		frame.add(this);
+		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 		addKeyListener(listener);
 		addMouseListener(listener);
 		addMouseMotionListener(listener);
@@ -39,18 +43,14 @@ public class Screen extends JPanel {
 		setPreferredSize(new Dimension(750, 750));
 		entities.add(player);
 		timer.setActionCommand("timer");
-		timer.start();
 		frame.pack();
 		frame.setVisible(true);
+		if (!paused)
+			timer.start();
 	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		/*
-		 * if (isFullscreen) {
-		 * 
-		 * frame.setUndecorated(isFullscreen); }
-		 */
 		g2 = (Graphics2D) g;
 		Point corner = new Point(getBounds().x, getBounds().y);
 		for (int i = 0; i < getWidth(); i += background.getWidth()) {
@@ -63,10 +63,6 @@ public class Screen extends JPanel {
 			Entity e = entities.get(i);
 			e.update(tickNum);
 			e.draw(g2, corner);
-			/*
-			 * if(e instanceof Projectile && ((Projectile) e).collided == true)
-			 * { ((Projectile) e).effect.drawEffect(g2, e.getPosition()); }
-			 */
 			if (e instanceof EnemyShip)
 				drawHealth(g2, (Ship) e);
 
@@ -75,6 +71,7 @@ public class Screen extends JPanel {
 				timer.setDelay(timerSpeed * 2);
 			} else
 				timer.setDelay(timerSpeed);
+
 		}
 
 		g.drawString(tickNum + "", 500, 500);
@@ -125,7 +122,7 @@ public class Screen extends JPanel {
 				* getHeight());
 	}
 
-	public void drawPlayerHealth(Graphics2D g) {
+	public synchronized void drawPlayerHealth(Graphics2D g) {
 		g.setColor(Color.GREEN);
 		g.drawRect(20, getHeight() - getHeight() / 15,
 				player.getMaxHealth() / 2, 15);
@@ -133,7 +130,7 @@ public class Screen extends JPanel {
 				15);
 	}
 
-	public void drawHealth(Graphics2D g, Ship s) {
+	public synchronized void drawHealth(Graphics2D g, Ship s) {
 		if (s.getHealth() < s.getMaxHealth()) {
 			g.setColor(Color.RED);
 			g.drawRect(s.getPosition().x, s.getPosition().y - s.img.getHeight()
@@ -155,9 +152,8 @@ public class Screen extends JPanel {
 		g.drawRect(50, 50, 100, 20);
 		g.drawString("Score: " + score, 55, 65);
 	}
-	
-	protected void enableFullscreen()
-	{
+
+	protected void enableFullscreen() {
 		oldBounds = frame.getBounds();
 		oldState = frame.getExtendedState();
 		frame.dispose();
@@ -167,15 +163,25 @@ public class Screen extends JPanel {
 		isFullscreen = true;
 	}
 
-	protected void disableFullscreen()
-	{
+	protected void disableFullscreen() {
 		frame.dispose();
 		frame.setUndecorated(false);
-		frame.setPreferredSize(new Dimension(oldBounds.width,oldBounds.height));
+		frame.setPreferredSize(new Dimension(oldBounds.width, oldBounds.height));
 		frame.pack();
 		frame.setVisible(true);
 		isFullscreen = false;
 	}
+
+	protected void pause() {
+		paused = true;
+		timer.stop();
+	}
+
+	protected void unPause() {
+		paused = false;
+		timer.start();
+	}
+
 	public static void main(String[] args) {
 		new Screen();
 

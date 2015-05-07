@@ -47,8 +47,7 @@ public abstract class Ship extends Entity {
 			screen.entities.add(new Projectile(turret.projectile.img,
 					getPosition(), turret.projectile.getOrientation(),
 					turret.projectile.damage, turret.projectile.velocity, this,
-					new Bounds(turret.projectile.collisionArea.getArea()),
-					turret.projectile.effect, screen));
+					new Bounds(turret.projectile.collisionArea.getArea()), screen));
 	}
 
 	public void takeDamage(int damage) {
