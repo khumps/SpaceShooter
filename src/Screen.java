@@ -96,7 +96,7 @@ public class Screen extends JPanel {
 		checkCollision();
 		if (tickNum % 10 == 0)
 			purgeEntities();
-		if (tickNum % 30 == 0 && getNumShips() < 5)
+		if (tickNum % 30 == 0 && getNumShips() < 7)
 			entities.add(new EnemyShip(pointOnScreen(), 1, this));
 	}
 
