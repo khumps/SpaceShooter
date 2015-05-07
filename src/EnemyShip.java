@@ -9,8 +9,8 @@ public class EnemyShip extends Ship {
 
 	public EnemyShip(Point point, Screen screen) {
 		super(ENEMY_SHIP_IMAGE, point, INITIAL_HEALTH, new Turret(
-				Turret.TURRET_IMAGE, 10, 20, new Projectile(
-						img, new Point(1, 1), 0, 5, 100, 10, collisionArea, screen), screen),
+				Turret.TURRET_IMAGE, 10, 20, new Bullet(
+						new Point(1, 1),0, null, screen), screen),
 				new Bounds(new Rectangle(16, 16, 104, 28), new Rectangle(16,
 						100, 104, 28), new Rectangle(16, 44, 64, 56)), screen);
 		turret.projectile.setDamage(10);

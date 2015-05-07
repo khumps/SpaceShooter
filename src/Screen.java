@@ -86,10 +86,10 @@ public class Screen extends JPanel {
 		}
 	}
 	
-	public Graphics2D getGraphics()
+/*	public Graphics2D getGraphics()
 	{
 		return g2;
-	}
+	}*/
 
 	public void tick(int tickNum) {
 		System.out.println("test");
