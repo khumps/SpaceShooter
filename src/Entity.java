@@ -44,8 +44,8 @@ public abstract class Entity {
 		double sin = Math.sin(orientation);
 		double dx = distance * cos;
 		double dy = distance * sin;
-		double x = position.x + dx + .5;
-		double y = position.y + dy + .5;
+		double x = position.x + dx;
+		double y = position.y + dy;
 		position = new Point(x, y);
 		hasMoved = true;
 		collisionArea.setCenter(position);

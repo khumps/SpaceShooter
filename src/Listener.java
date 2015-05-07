@@ -26,7 +26,15 @@ public class Listener extends MouseAdapter implements KeyListener,
 			else
 				screen.debug = true;
 
-		} else {
+		} 
+		
+		else if(e.getKeyCode() == KeyEvent.VK_F11)
+		{
+			if(screen.isFullscreen)
+			screen.disableFullscreen();
+			else screen.enableFullscreen();
+		}
+			else {
 			int c = e.getKeyCode();
 			keys.add(c);
 		}

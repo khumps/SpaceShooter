@@ -2,7 +2,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 public class EnemyShip extends Ship {
-	private final int VELOCITY = 5;
+	private final int VELOCITY = 3;
 	private static final int INITIAL_HEALTH = 200;
 	private static final BufferedImage ENEMY_SHIP_IMAGE = Utils
 			.loadImage("bomber.png");

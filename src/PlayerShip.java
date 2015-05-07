@@ -8,7 +8,7 @@ public class PlayerShip extends Ship {
 	private static final BufferedImage PLAYER_SHIP_IMAGE = Utils
 			.loadImage("player-ship.png");
 	private static final int FIRE_RATE = 5;
-	public static final int PLAYER_VELOCITY = 15;
+	public static final int PLAYER_VELOCITY = 10;
 	private boolean isAlive = true;
 	private static final Bounds PLAYER_BOUNDS = new Bounds(new Rectangle(104,
 			64, 28, 16), new Rectangle(96, 60, 8, 24), new Rectangle(72, 36,
