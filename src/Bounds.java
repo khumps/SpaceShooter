@@ -3,6 +3,11 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 
+/**
+ * 
+ * @author Benjamin Hetherington
+ *
+ */
 public class Bounds {
 	private Point center;
 	private Area area;

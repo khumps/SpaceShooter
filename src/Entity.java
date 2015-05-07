@@ -22,7 +22,7 @@ public abstract class Entity {
 	private Point corner;
 	private boolean hasMoved;
 	protected Bounds collisionArea;
-	public final int BULLET_SIZE = 35;
+	public final int BULLET_SIZE = 10;
 	protected Screen screen;
 
 	public Entity(BufferedImage img, double orientation, Point location,
@@ -32,10 +32,11 @@ public abstract class Entity {
 		this.position = location;
 		this.screen = screen;
 		this.img = img;
-		this.origImg = img;
+		this.setOrigImg(img);
 		this.orientation = orientation;
 		collisionArea = b;
 		collisionArea.setCenter(location);
+		collisionArea.setAngle(orientation);
 	}
 
 	public void move(double distance) {
@@ -82,26 +83,8 @@ public abstract class Entity {
 				img.getWidth() / 2, img.getHeight() / 2);
 		AffineTransformOp op = new AffineTransformOp(tx,
 				AffineTransformOp.TYPE_BILINEAR);
-		g.drawImage(op.filter(origImg, null), x, y, null);
+		g.drawImage(op.filter(getOrigImg(), null), x, y, null);
 
-	}
-
-	public void drawProjectile(Graphics2D g, Point corner) {
-		int x = (int) (position.x - corner.x - img.getWidth() / 2);
-		int y = (int) (position.y - corner.y - img.getHeight() / 2);
-		
-		AffineTransform tx = AffineTransform.getRotateInstance(orientation,
-				img.getWidth() / 2, img.getHeight() / 2);
-		AffineTransformOp op = new AffineTransformOp(tx,
-				AffineTransformOp.TYPE_BILINEAR);
-		/*
-		 * g.drawImage(op.filter(origImg, null), x, y, origImg.getWidth(),
-		 * origImg.getHeight(), 0, 0, BULLET_SIZE, BULLET_SIZE, null);
-		 */
-		g.drawImage(op.filter(origImg, null), position.x - (BULLET_SIZE / 2),
-				position.y - (BULLET_SIZE / 2), BULLET_SIZE, BULLET_SIZE, null);
-
-		// RESIZE ONCE
 	}
 
 	public abstract boolean doesCollide(Entity e);
@@ -111,6 +94,15 @@ public abstract class Entity {
 	public void setOrientation(double orientation) {
 		this.orientation = orientation;
 		collisionArea.setAngle(orientation);
+	}
+
+	public BufferedImage getOrigImg() {
+		return origImg;
+	}
+	
+	protected void setOrigImg(BufferedImage img)
+	{
+		origImg = img;
 	}
 
 }

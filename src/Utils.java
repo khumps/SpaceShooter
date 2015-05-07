@@ -1,3 +1,4 @@
+import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -33,11 +34,29 @@ public class Utils {
 				AffineTransformOp.TYPE_BILINEAR);
 		return op.filter(img, null);
 	}
-	
-	public static Area createArea(Shape... shape)
-	{
+
+	public static void resizeProjectile(Entity e) {
+
+		AffineTransform tx = AffineTransform
+				.getRotateInstance(e.getOrientation(), e.img.getWidth() / 2,
+						e.img.getHeight() / 2);
+		tx = AffineTransform.getScaleInstance(e.BULLET_SIZE / e.img.getWidth(),
+				e.BULLET_SIZE - e.img.getWidth());
+		AffineTransformOp op = new AffineTransformOp(tx,
+				AffineTransformOp.TYPE_BILINEAR);
+		/*
+		 * g.drawImage(op.filter(origImg, null), x, y, origImg.getWidth(),
+		 * origImg.getHeight(), 0, 0, BULLET_SIZE, BULLET_SIZE, null);
+		 */
+		e.img = op.filter(e.getOrigImg(), null);
+		e.setOrigImg(e.img);
+
+		// RESIZE ONCE
+	}
+
+	public static Area createArea(Shape... shape) {
 		Area a = new Area();
-		for(Shape s: shape)
+		for (Shape s : shape)
 			a.add(new Area(s));
 		return a;
 	}
