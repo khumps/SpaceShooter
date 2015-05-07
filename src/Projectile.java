@@ -8,17 +8,15 @@ public class Projectile extends Entity {
 	protected int damage;
 	protected final int velocity;
 	protected Ship source;
-/*	protected Effect effect;*/
 
 	public Projectile(BufferedImage img, Point location, double orientation,
-			int damage, int velocity, Ship source, Bounds bounds, /*Effect effect,*/ Screen screen) {
+			int damage, int velocity, Ship source, Bounds bounds, Screen screen) {
 		super(Utils.rotate(img, Math.toRadians(0)), orientation, location,
 				bounds, screen);
 
 		this.source = source;
 		this.damage = damage;
 		this.velocity = velocity;
-/*		this.effect = effect;*/
 		Utils.resizeProjectile(this);
 	}
 
