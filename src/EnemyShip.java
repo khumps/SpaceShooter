@@ -9,22 +9,25 @@ public class EnemyShip extends Ship {
 	private final int score = 10;
 	private int scoreModifier;
 
-	public EnemyShip(Point point, int scoreModifier, Screen screen) {
-		super(ENEMY_SHIP_IMAGE, point, INITIAL_HEALTH, new Turret(
-				Turret.TURRET_IMAGE, 10, 20, new Bullet(new Point(1, 1), 0,
-						null, screen), screen), new Bounds(new Rectangle(16,
-				16, 104, 28), new Rectangle(16, 100, 104, 28), new Rectangle(
-				16, 44, 64, 56)), screen);
+	public EnemyShip(PointDouble point, int scoreModifier, Screen screen) {
+		super(ENEMY_SHIP_IMAGE, point, INITIAL_HEALTH, new LaserTurret(
+				Turret.TURRET_IMAGE, 10, 20, new Bullet(new PointDouble(1, 1),
+						0, null, screen), null, screen),
+				new Bounds(new Rectangle(16, 16, 104, 28), new Rectangle(16,
+						100, 104, 28), new Rectangle(16, 44, 64, 56)), screen);
+		turret.ship = this;
 		turret.projectile.setDamage(10);
 		this.scoreModifier = scoreModifier;
 	}
 
 	public void update(int tickNum) {
 		super.update();
-		Point position = screen.player.getPosition();
+		PointDouble position = screen.player.getPosition();
 		double orientation = Utils.getAngle(getPosition(),
 				screen.player.getPosition());
 		moveTurret(orientation);
+		if (!screen.getBounds().contains(getPosition().x, getPosition().y))
+			setOrientation(getOrientation() * -1);
 		fire(tickNum);
 		if (tickNum % 20 == 0) {
 			if (tickNum % 100 == 0)
@@ -34,30 +37,11 @@ public class EnemyShip extends Ship {
 								.getPosition().y))) > 600)
 					setOrientation(orientation);
 
-				else {
-					int decision = (int) (Math.random() * 16);
-					if (decision == 1 || decision == 2) // Move left
-						setOrientation(Entity.LEFT);
-					if (decision == 3 || decision == 4) // Move right
-						setOrientation(Entity.RIGHT);
-					if (decision == 5 || decision == 6) // Move up
-						setOrientation(Entity.UP);
-					if (decision == 7 || decision == 8) // Move down
-						setOrientation(Entity.DOWN);
-					if (decision == 9 || decision == 10) // Move right & up
-						setOrientation(Entity.UP_RIGHT);
-					if (decision == 3 || decision == 4) // Move right & down
-						setOrientation(Entity.DOWN_RIGHT);
-					if (decision == 3 || decision == 4) // Move left & up
-						setOrientation(Entity.UP_LEFT);
-					if (decision == 3 || decision == 4) // Move left & down
-						setOrientation(Entity.DOWN_LEFT);
-				}
+			setOrientation(Math.random() * Math.PI * 2);
 		}
-		move(VELOCITY);
+		//move(VELOCITY);
 	}
 
-	@Override
 	public void collides(Entity e) {
 		// TODO Auto-generated method stub
 

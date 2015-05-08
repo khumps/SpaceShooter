@@ -13,8 +13,8 @@ public final class Point {
 	 * @param y
 	 *            The Y of the coordinate
 	 */
-	public final int x;
-	public final int y;
+	public int x;
+	public int y;
 
 	/**
 	 * 
@@ -31,8 +31,8 @@ public final class Point {
 	}
 
 	public Point(double x, double y) {
-		this.x = (int) x;
-		this.y = (int) y;
+		this.x = (int) (x + .5);
+		this.y = (int) (y + .5);
 	}
 
 	/**
@@ -44,8 +44,9 @@ public final class Point {
 		return "(" + x + "," + y + ")";
 	}
 
-	public Point translate(double dx, double dy) {
-		return new Point((int) (x + dx), (int) (y + dy));
+	public void translate(double dx, double dy) {
+		x = (int) (x + dx);
+		y = (int) (y + dy);
 	}
 
 	public Point clone() {

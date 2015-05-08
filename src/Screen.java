@@ -20,7 +20,7 @@ public class Screen extends JPanel {
 	Timer timer = new Timer(timerSpeed, listener);
 	int i = 0;
 	protected Point playerMovement = new Point(0, 0);
-	protected PlayerShip player = new PlayerShip(new Point(500, 500), this);
+	protected PlayerShip player = new PlayerShip(new PointDouble(500, 500), this);
 	private BufferedImage background = Utils.loadImage("space.png");
 	protected Graphics2D g2;
 	protected boolean debug = false;
@@ -116,8 +116,8 @@ public class Screen extends JPanel {
 		return numShips;
 	}
 
-	public Point pointOnScreen() {
-		return new Point(Math.random() * getWidth(), Math.random()
+	public PointDouble pointOnScreen() {
+		return new PointDouble(Math.random() * getWidth(), Math.random()
 				* getHeight());
 	}
 
@@ -132,9 +132,9 @@ public class Screen extends JPanel {
 	public synchronized void drawHealth(Graphics2D g, Ship s) {
 		if (s.getHealth() < s.getMaxHealth()) {
 			g.setColor(Color.RED);
-			g.drawRect(s.getPosition().x, s.getPosition().y - s.img.getHeight()
+			g.drawRect(s.getPosition().getXInt(), s.getPosition().getYInt() - s.img.getHeight()
 					/ 2, s.getMaxHealth() / 3, 10);
-			g.fillRect(s.getPosition().x, s.getPosition().y - s.img.getHeight()
+			g.fillRect(s.getPosition().getXInt(), s.getPosition().getYInt() - s.img.getHeight()
 					/ 2, s.getHealth() / 3, 10);
 		}
 	}

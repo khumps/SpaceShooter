@@ -21,9 +21,9 @@ public class Utils {
 		return null;
 	}
 
-	public static double getAngle(Point p1, Point p2) {
-		double xDiff = p2.x - p1.x;
-		double yDiff = p2.y - p1.y;
+	public static double getAngle(PointDouble pointDouble, PointDouble pointDouble2) {
+		double xDiff = pointDouble2.x - pointDouble.x;
+		double yDiff = pointDouble2.y - pointDouble.y;
 		return (Math.atan2(yDiff, xDiff));
 	}
 

@@ -9,7 +9,7 @@ import java.util.HashSet;
 public class Listener extends MouseAdapter implements KeyListener,
 		ActionListener {
 	private HashSet<Integer> keys = new HashSet<Integer>();
-	Point mousePosition = new Point(1, 1);
+	PointDouble mousePosition = new PointDouble(1, 1);
 	private boolean mousePressed = false;
 	Screen screen;
 
@@ -116,7 +116,7 @@ public class Listener extends MouseAdapter implements KeyListener,
 	}
 
 	public void mouseMoved(MouseEvent e) {
-		mousePosition = new Point(e.getX(), e.getY());
+		mousePosition = new PointDouble(e.getX(), e.getY());
 		screen.player.moveTurret(mousePosition);
 	}
 
@@ -133,7 +133,7 @@ public class Listener extends MouseAdapter implements KeyListener,
 	}
 
 	public void mouseDragged(MouseEvent e) {
-		mousePosition = new Point(e.getX(), e.getY());
+		mousePosition.moveTo(e.getX(), e.getY());
 		screen.player.moveTurret(mousePosition);
 		screen.player.fire(screen.tickNum);
 	}

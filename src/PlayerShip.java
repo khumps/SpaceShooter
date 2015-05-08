@@ -4,10 +4,10 @@ import java.awt.image.BufferedImage;
 
 public class PlayerShip extends Ship {
 	private static final int DAMAGE = 100;
-	private static final int INITIAL_HEALTH = 1000;
+	private static final int INITIAL_HEALTH = 100000;
 	private static final BufferedImage PLAYER_SHIP_IMAGE = Utils
 			.loadImage("player-ship.png");
-	private static final int FIRE_RATE = 5;
+	private static final int FIRE_RATE = 1;
 	public static final int PLAYER_VELOCITY = 10;
 	private boolean isAlive = true;
 	private static final Bounds PLAYER_BOUNDS = new Bounds(new Rectangle(104,
@@ -17,11 +17,12 @@ public class PlayerShip extends Ship {
 			new Rectangle(44, 16, 4, 112), new Rectangle(28, 12, 16, 120),
 			new Rectangle(24, 16, 4, 112), new Rectangle(12, 28, 14, 88));
 
-	public PlayerShip(Point location, Screen screen) {
-		super(PLAYER_SHIP_IMAGE, location, INITIAL_HEALTH, new Turret(
-				Utils.loadImage("turret.png"), 10, FIRE_RATE, new Bullet(
-						new Point(1, 1), 10, null, screen), screen),
+	public PlayerShip(PointDouble location, Screen screen) {
+		super(PLAYER_SHIP_IMAGE, location, INITIAL_HEALTH, new LaserTurret(
+				Utils.loadImage("turret.png"), 10, FIRE_RATE, new Laser(
+						new PointDouble(1, 1), 10, null, screen), null, screen),
 				PLAYER_BOUNDS, screen);
+		turret.ship = this;
 	}
 
 	public void update(int tickNum) {

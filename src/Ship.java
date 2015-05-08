@@ -10,7 +10,7 @@ public abstract class Ship extends Entity {
 	protected Turret turret;
 	private boolean isAlive = true;
 
-	public Ship(BufferedImage img, Point location, int health, Turret turret,
+	public Ship(BufferedImage img, PointDouble location, int health, Turret turret,
 			Bounds b, Screen screen) {
 		super(img, Math.toRadians((Math.random() * 360)), location, b, screen);
 		this.turret = turret;
@@ -24,7 +24,7 @@ public abstract class Ship extends Entity {
 		turret.setPosition(this.getPosition());
 	}
 
-	public void moveTurret(Point mouse) {
+	public void moveTurret(PointDouble mouse) {
 		turret.setOrientation(Utils.getAngle(getPosition(), mouse));
 	}
 
@@ -43,11 +43,8 @@ public abstract class Ship extends Entity {
 	}
 
 	public void fire(int tickNum) {
-		if (isAlive && tickNum % turret.fireRate == 0)
-			screen.entities.add(new Projectile(turret.projectile.img,
-					getPosition(), turret.projectile.getOrientation(),
-					turret.projectile.damage, turret.projectile.velocity, this,
-					new Bounds(turret.projectile.collisionArea.getArea()), screen));
+		if (isAlive)
+			turret.fire(tickNum);
 	}
 
 	public void takeDamage(int damage) {

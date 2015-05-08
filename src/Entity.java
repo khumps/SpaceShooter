@@ -18,17 +18,17 @@ public abstract class Entity {
 	private BufferedImage origImg;
 	protected BufferedImage img;
 	private double orientation;
-	private Point position;
+	private PointDouble position;
 	private Point corner;
 	private boolean hasMoved;
 	protected Bounds collisionArea;
 	public final int BULLET_SIZE = 10;
 	protected Screen screen;
 
-	public Entity(BufferedImage img, double orientation, Point location,
+	public Entity(BufferedImage img, double orientation, PointDouble location,
 			Bounds b, Screen screen) {
 		if (location == null)
-			position = new Point(100, 10);
+			position = new PointDouble(100, 10);
 		this.position = location;
 		this.screen = screen;
 		this.img = img;
@@ -46,17 +46,17 @@ public abstract class Entity {
 		double dy = distance * sin;
 		double x = position.x + dx;
 		double y = position.y + dy;
-		position = new Point(x, y);
+		position = new PointDouble(x, y);
 		hasMoved = true;
 		collisionArea.setCenter(position);
 
 	}
 
-	public Point getPosition() {
+	public PointDouble getPosition() {
 		return position;
 	}
 
-	public void setPosition(Point location) {
+	public void setPosition(PointDouble location) {
 		this.position = location;
 
 	}

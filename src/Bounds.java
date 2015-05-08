@@ -21,9 +21,8 @@ public class Bounds {
 		Rectangle r = area.getBounds();
 		center = new Point(r.getCenterX(), r.getCenterY());
 	}
-	
-	public Bounds(Bounds b)
-	{
+
+	public Bounds(Bounds b) {
 		this.center = b.center;
 		this.area = b.area;
 		this.angle = b.angle;
@@ -47,9 +46,9 @@ public class Bounds {
 		return !intersection.isEmpty();
 	}
 
-	public void setCenter(Point p) {
-		double dx = p.x - center.x, dy = p.y - center.y;
-		center = center.translate(dx, dy);
+	public void setCenter(PointDouble location) {
+		double dx = location.x - center.x, dy = location.y - center.y;
+		center.translate(dx, dy);
 		area.transform(AffineTransform.getTranslateInstance(dx, dy));
 	}
 

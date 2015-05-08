@@ -10,15 +10,16 @@ public class Projectile extends Entity {
 	protected Ship source;
 	protected boolean collided = false;
 
-	public Projectile(BufferedImage img, Point location, double orientation,
-			int damage, int velocity, Ship source, Bounds bounds, Screen screen) {
-		super(Utils.rotate(img, Math.toRadians(0)), orientation, location,
+	public Projectile(BufferedImage img, PointDouble pointDouble,
+			double orientation, int damage, int velocity, Ship source,
+			Bounds bounds, Screen screen) {
+		super(Utils.rotate(img, Math.toRadians(0)), orientation, pointDouble,
 				bounds, screen);
 
 		this.source = source;
 		this.damage = damage;
 		this.velocity = velocity;
-		Utils.resizeProjectile(this);
+		//Utils.resizeProjectile(this);
 	}
 
 	public void update(int tickNum) {
