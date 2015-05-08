@@ -39,7 +39,7 @@ public class EnemyShip extends Ship {
 
 			setOrientation(Math.random() * Math.PI * 2);
 		}
-		//move(VELOCITY);
+		move(VELOCITY);
 	}
 
 	public void collides(Entity e) {
