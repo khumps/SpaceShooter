@@ -37,4 +37,9 @@ public class PointDouble {
 		setX(x);
 		setY(y);
 	}
+	
+	public PointDouble clone()
+	{
+		return new PointDouble(x,y);
+	}
 }

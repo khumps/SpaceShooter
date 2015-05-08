@@ -2,9 +2,9 @@ import java.awt.image.BufferedImage;
 
 public class Wingmen extends Ship {
 
-	public Wingmen(BufferedImage img, PointDouble location, int health,
+	public Wingmen(PointDouble location, int health,
 			Turret turret, Bounds b, Screen screen) {
-		super(img, location, health, turret, b, screen);
+		super(Utils.loadImage("Wingman.png"), location, health, new LaserTurret(0, 10, null, screen), b, screen);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -28,7 +28,7 @@ public class Wingmen extends Ship {
 								.getPosition().y))) > 300)
 					setOrientation(orientation);
 			}
-			turret.setOrientation(Utils.getAngle(getPosition(), nearestEnemy()
+			hardPointMainTurret.setOrientation(Utils.getAngle(getPosition(), nearestEnemy()
 					.getPosition()));
 			fire(tickNum);
 		}

@@ -76,9 +76,9 @@ public abstract class Entity {
 		return old;
 	}
 
-	public void draw(Graphics2D g, Point corner) {
-		int x = (int) (position.x - corner.x - img.getWidth() / 2);
-		int y = (int) (position.y - corner.y - img.getHeight() / 2);
+	public void draw(Graphics2D g, PointDouble screenCorner) {
+		int x = (int) (position.x - screenCorner.x - img.getWidth() / 2);
+		int y = (int) (position.y - screenCorner.y - img.getHeight() / 2);
 		AffineTransform tx = AffineTransform.getRotateInstance(orientation,
 				img.getWidth() / 2, img.getHeight() / 2);
 		AffineTransformOp op = new AffineTransformOp(tx,
@@ -99,9 +99,8 @@ public abstract class Entity {
 	public BufferedImage getOrigImg() {
 		return origImg;
 	}
-	
-	protected void setOrigImg(BufferedImage img)
-	{
+
+	protected void setOrigImg(BufferedImage img) {
 		origImg = img;
 	}
 

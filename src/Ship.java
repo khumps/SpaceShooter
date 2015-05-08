@@ -7,44 +7,51 @@ import java.awt.image.BufferedImage;
 public abstract class Ship extends Entity {
 	private int health;
 	private final int maxHealth;
-	protected Turret turret;
+	protected Turret hardPointMainTurret;
+	protected Turret hardPoint2Turret;
 	private boolean isAlive = true;
+	protected final PointDouble hardPointMain;
+	protected final PointDouble hardPoint2;
 
-	public Ship(BufferedImage img, PointDouble location, int health, Turret turret,
-			Bounds b, Screen screen) {
+	public Ship(BufferedImage img, PointDouble location, int health,
+			Turret turret, Bounds b, Screen screen) {
 		super(img, Math.toRadians((Math.random() * 360)), location, b, screen);
-		this.turret = turret;
+		this.hardPointMainTurret = turret;
 		this.health = health;
 		maxHealth = health;
-		turret.setPosition(super.getPosition());
+		hardPointMain = getPosition();
+		hardPoint2 = hardPointMain.clone();
+		hardPoint2.setX(hardPointMain.y + 20);
+		turret.setPosition(hardPointMain);
+		addTurret(turret,hardPoint2Turret);
 		screen.entities.add(this);
 	}
 
 	public void update() {
-		turret.setPosition(this.getPosition());
+		hardPointMainTurret.setPosition(this.getPosition());
 	}
 
 	public void moveTurret(PointDouble mouse) {
-		turret.setOrientation(Utils.getAngle(getPosition(), mouse));
+		hardPointMainTurret.setOrientation(Utils.getAngle(getPosition(), mouse));
 	}
 
 	public void moveTurret(double orientation) {
-		turret.setOrientation(orientation);
+		hardPointMainTurret.setOrientation(orientation);
 	}
 
-	public void draw(Graphics2D g, Point corner) {
+	public void draw(Graphics2D g, PointDouble corner) {
 		super.draw(g, corner);
-		turret.draw(g, corner);
+		hardPointMainTurret.draw(g, corner);
 	}
 
 	public void remove() {
-		screen.entities.remove(turret);
+		screen.entities.remove(hardPointMainTurret);
 		screen.entities.remove(this);
 	}
 
 	public void fire(int tickNum) {
 		if (isAlive)
-			turret.fire(tickNum);
+			hardPointMainTurret.fire(tickNum);
 	}
 
 	public void takeDamage(int damage) {
@@ -54,6 +61,10 @@ public abstract class Ship extends Entity {
 			remove();
 		}
 		screen.repaint();
+	}
+
+	public void addTurret(Turret turret, Turret hardPoint) {
+		hardPoint = turret;
 	}
 
 	public abstract boolean isEnemy(Ship s);

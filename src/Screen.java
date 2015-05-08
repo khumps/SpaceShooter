@@ -10,17 +10,19 @@ import java.util.LinkedList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JViewport;
 import javax.swing.Timer;
 
 public class Screen extends JPanel {
-	 protected ArrayList<Entity> entities = new ArrayList<Entity>();
+	protected ArrayList<Entity> entities = new ArrayList<Entity>();
 	private Listener listener = new Listener(this);
 	protected int tickNum = 0;
 	private int timerSpeed = 16;
 	Timer timer = new Timer(timerSpeed, listener);
 	int i = 0;
 	protected Point playerMovement = new Point(0, 0);
-	protected PlayerShip player = new PlayerShip(new PointDouble(500, 500), this);
+	protected PlayerShip player = new PlayerShip(new PointDouble(500, 500),
+			this);
 	private BufferedImage background = Utils.loadImage("space.png");
 	protected Graphics2D g2;
 	protected boolean debug = false;
@@ -32,7 +34,6 @@ public class Screen extends JPanel {
 	protected boolean paused = false;
 
 	public Screen() {
-
 		frame.add(this);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 		addKeyListener(listener);
@@ -51,7 +52,7 @@ public class Screen extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g2 = (Graphics2D) g;
-		Point corner = new Point(getBounds().x, getBounds().y);
+		PointDouble corner = new PointDouble(getBounds().x, getBounds().y);
 		for (int i = 0; i < getWidth(); i += background.getWidth()) {
 			for (int j = 0; j < getHeight(); j += background.getHeight()) {
 				g.drawImage(background, i, j, null);
@@ -132,10 +133,10 @@ public class Screen extends JPanel {
 	public synchronized void drawHealth(Graphics2D g, Ship s) {
 		if (s.getHealth() < s.getMaxHealth()) {
 			g.setColor(Color.RED);
-			g.drawRect(s.getPosition().getXInt(), s.getPosition().getYInt() - s.img.getHeight()
-					/ 2, s.getMaxHealth() / 3, 10);
-			g.fillRect(s.getPosition().getXInt(), s.getPosition().getYInt() - s.img.getHeight()
-					/ 2, s.getHealth() / 3, 10);
+			g.drawRect(s.getPosition().getXInt(), s.getPosition().getYInt()
+					- s.img.getHeight() / 2, s.getMaxHealth() / 3, 10);
+			g.fillRect(s.getPosition().getXInt(), s.getPosition().getYInt()
+					- s.img.getHeight() / 2, s.getHealth() / 3, 10);
 		}
 	}
 

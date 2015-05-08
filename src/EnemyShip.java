@@ -15,8 +15,8 @@ public class EnemyShip extends Ship {
 						0, null, screen), null, screen),
 				new Bounds(new Rectangle(16, 16, 104, 28), new Rectangle(16,
 						100, 104, 28), new Rectangle(16, 44, 64, 56)), screen);
-		turret.ship = this;
-		turret.projectile.setDamage(10);
+		hardPointMainTurret.ship = this;
+		hardPointMainTurret.projectile.setDamage(10);
 		this.scoreModifier = scoreModifier;
 	}
 
