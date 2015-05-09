@@ -96,8 +96,10 @@ public class Listener extends MouseAdapter implements KeyListener,
 
 		if (command.equals("timer")) {
 			act();
-			if (keys.size() > 0)
+			if (keys.size() > 0) {
 				screen.player.move(PlayerShip.PLAYER_VELOCITY);
+
+			}
 			screen.player.update();
 			screen.player.moveTurret(mousePosition);
 
@@ -115,7 +117,8 @@ public class Listener extends MouseAdapter implements KeyListener,
 	}
 
 	public void mouseMoved(MouseEvent e) {
-		mousePosition = new PointDouble(e.getX(), e.getY());
+		// PointDouble offset = screen.cam.tick();
+		mousePosition.moveTo(e.getX(), e.getY());
 		screen.player.moveTurret(mousePosition);
 	}
 

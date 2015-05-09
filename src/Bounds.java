@@ -9,7 +9,7 @@ import java.awt.geom.Area;
  *
  */
 public class Bounds {
-	private Point center;
+	private PointDouble center;
 	private Area area;
 	private double angle;
 
@@ -19,7 +19,7 @@ public class Bounds {
 			area.add(new Area(shape));
 		}
 		Rectangle r = area.getBounds();
-		center = new Point(r.getCenterX(), r.getCenterY());
+		center = new PointDouble(r.getCenterX(), r.getCenterY());
 	}
 
 	public Bounds(Bounds b) {
@@ -28,7 +28,7 @@ public class Bounds {
 		this.angle = b.angle;
 	}
 
-	public Point getCenter() {
+	public PointDouble getCenter() {
 		return center;
 	}
 

@@ -3,14 +3,10 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.LinkedList;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JViewport;
 import javax.swing.Timer;
 
 public class Screen extends JPanel {
@@ -32,6 +28,7 @@ public class Screen extends JPanel {
 	private Rectangle oldBounds;
 	private int oldState;
 	protected boolean paused = false;
+	protected Camera cam = new Camera(player);
 
 	public Screen() {
 		frame.add(this);
@@ -52,6 +49,7 @@ public class Screen extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g2 = (Graphics2D) g;
+
 		PointDouble corner = new PointDouble(getBounds().x, getBounds().y);
 		for (int i = 0; i < getWidth(); i += background.getWidth()) {
 			for (int j = 0; j < getHeight(); j += background.getHeight()) {
@@ -62,18 +60,17 @@ public class Screen extends JPanel {
 		for (int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
 			e.update(tickNum);
-			e.draw(g2, corner);
+			e.draw(g2, corner, cam.tick());
 			if (e instanceof EnemyShip)
 				drawHealth(g2, (Ship) e);
 
 			if (debug) {
 				drawHitBox(g2, e);
-				timer.setDelay(timerSpeed * 2);
+				timer.setDelay(timerSpeed * 4);
 			} else
 				timer.setDelay(timerSpeed);
 
 		}
-
 		g.drawString(tickNum + "", 500, 500);
 
 		drawHud(g2);
@@ -102,8 +99,7 @@ public class Screen extends JPanel {
 			Entity e1 = entities.get(i);
 			if (e1 instanceof Ship)
 				for (int j = 1; j < entities.size(); j++) {
-					Entity e2 = entities.get(j);
-					e1.doesCollide(e2);
+					e1.doesCollide(entities.get(j));
 				}
 		}
 	}

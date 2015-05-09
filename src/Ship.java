@@ -23,7 +23,7 @@ public abstract class Ship extends Entity {
 		hardPoint2 = hardPointMain.clone();
 		hardPoint2.setX(hardPointMain.y + 20);
 		turret.setPosition(hardPointMain);
-		addTurret(turret,hardPoint2Turret);
+		addTurret(turret, hardPoint2Turret);
 		screen.entities.add(this);
 	}
 
@@ -32,16 +32,18 @@ public abstract class Ship extends Entity {
 	}
 
 	public void moveTurret(PointDouble mouse) {
-		hardPointMainTurret.setOrientation(Utils.getAngle(getPosition(), mouse));
+		hardPointMainTurret
+				.setOrientation(Utils.getAngle(getPosition(), mouse));
 	}
 
 	public void moveTurret(double orientation) {
 		hardPointMainTurret.setOrientation(orientation);
 	}
 
-	public void draw(Graphics2D g, PointDouble corner) {
-		super.draw(g, corner);
-		hardPointMainTurret.draw(g, corner);
+	public void draw(Graphics2D g, PointDouble corner, PointDouble
+			offset) {
+		super.draw(g, corner, offset);
+		hardPointMainTurret.draw(g, corner, offset);
 	}
 
 	public void remove() {

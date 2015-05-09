@@ -1,20 +1,15 @@
-import java.awt.Dimension;
-
 public class Camera {
-	private Dimension view;
-	private PointDouble topLeft;
+	protected double x;
+	protected double y;
+	protected PlayerShip player;
 
-	;;
-	private Screen screen;
-
-	public Camera(Dimension dimension, Screen screen, PointDouble topLeft) {
-		this.view = view;
-		this.screen = screen;
-		this.topLeft = topLeft;
+	public Camera(PlayerShip p) {
+		this.player = p;
 
 	}
 
-	public PointDouble drawPoint(PointDouble position) {
-		return new PointDouble(position.x - topLeft.x, position.y - topLeft.y);
+	public PointDouble tick() {
+		return player.getPosition();
 	}
+
 }

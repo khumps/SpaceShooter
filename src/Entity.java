@@ -39,7 +39,7 @@ public abstract class Entity {
 		collisionArea.setAngle(orientation);
 	}
 
-	public void move(double distance) {
+	public Point move(double distance) {
 		double cos = Math.cos(orientation);
 		double sin = Math.sin(orientation);
 		double dx = distance * cos;
@@ -49,6 +49,7 @@ public abstract class Entity {
 		position = new PointDouble(x, y);
 		hasMoved = true;
 		collisionArea.setCenter(position);
+		return new Point(dx, dy);
 
 	}
 
@@ -76,9 +77,11 @@ public abstract class Entity {
 		return old;
 	}
 
-	public void draw(Graphics2D g, PointDouble screenCorner) {
-		int x = (int) (position.x - screenCorner.x - img.getWidth() / 2);
-		int y = (int) (position.y - screenCorner.y - img.getHeight() / 2);
+	public void draw(Graphics2D g, PointDouble screenCorner, PointDouble offset) {
+		int x = (int) (position.x + screenCorner.x/* - offset.x */- img
+				.getWidth() / 2 /* + screen.getWidth() / 2 */);
+		int y = (int) (position.y + screenCorner.y - /* offset.y - */img
+				.getHeight() / 2 /* + screen.getHeight() / 2 */);
 		AffineTransform tx = AffineTransform.getRotateInstance(orientation,
 				img.getWidth() / 2, img.getHeight() / 2);
 		AffineTransformOp op = new AffineTransformOp(tx,

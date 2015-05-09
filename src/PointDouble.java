@@ -38,6 +38,12 @@ public class PointDouble {
 		setY(y);
 	}
 	
+	public void translate(double dx, double dy)
+	{
+		x += dx;
+		y += dy;
+	}
+	
 	public PointDouble clone()
 	{
 		return new PointDouble(x,y);
