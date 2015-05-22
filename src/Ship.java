@@ -27,6 +27,10 @@ public abstract class Ship extends Entity {
 		screen.entities.add(this);
 	}
 
+	public boolean isAlive() {
+		return isAlive;
+	}
+
 	public void update() {
 		hardPointMainTurret.setPosition(this.getPosition());
 	}
