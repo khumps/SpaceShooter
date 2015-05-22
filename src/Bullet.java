@@ -3,7 +3,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 public class Bullet extends Projectile {
-	protected static final int VELOCITY = 10;
+	protected static final int VELOCITY = 13;
 	protected static final int DAMAGE = 20;
 
 	public Bullet(PointDouble location, double orientation, Ship source, Screen screen) {

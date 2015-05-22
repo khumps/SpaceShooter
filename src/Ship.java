@@ -31,17 +31,11 @@ public abstract class Ship extends Entity {
 		hardPointMainTurret.setPosition(this.getPosition());
 	}
 
-	public void moveTurret(PointDouble mouse) {
-		hardPointMainTurret
-				.setOrientation(Utils.getAngle(getPosition(), mouse));
-	}
-
 	public void moveTurret(double orientation) {
 		hardPointMainTurret.setOrientation(orientation);
 	}
 
-	public void draw(Graphics2D g, PointDouble corner, PointDouble
-			offset) {
+	public void draw(Graphics2D g, PointDouble corner, PointDouble offset) {
 		super.draw(g, corner, offset);
 		hardPointMainTurret.draw(g, corner, offset);
 	}

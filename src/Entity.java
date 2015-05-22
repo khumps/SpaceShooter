@@ -78,10 +78,12 @@ public abstract class Entity {
 	}
 
 	public void draw(Graphics2D g, PointDouble screenCorner, PointDouble offset) {
-		int x = (int) (position.x + screenCorner.x/* - offset.x */- img
-				.getWidth() / 2 /* + screen.getWidth() / 2 */);
-		int y = (int) (position.y + screenCorner.y - /* offset.y - */img
-				.getHeight() / 2 /* + screen.getHeight() / 2 */);
+		int x = (int) (position.x  - offset.x - img.getWidth()
+				/ 2 + screen.getWidth() / 2);
+		int y = (int) (position.y - offset.y - img.getHeight()
+				/ 2 + screen.getHeight() / 2);
+/*		if(this instanceof Ship)
+		System.out.println("Ship" + x + " " + y);*/
 		AffineTransform tx = AffineTransform.getRotateInstance(orientation,
 				img.getWidth() / 2, img.getHeight() / 2);
 		AffineTransformOp op = new AffineTransformOp(tx,

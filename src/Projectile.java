@@ -2,7 +2,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 
-public class Projectile extends Entity {
+public abstract class Projectile extends Entity {
 	public static final Rectangle TORPEDO_COLISION = new Rectangle(31, 99, 169,
 			58);
 	protected int damage;
@@ -26,8 +26,8 @@ public class Projectile extends Entity {
 		move(velocity);
 	}
 
-	public void collides(Entity e) {
-		if (e != source /* && !(e instanceof PlayerShip) */)
+	public abstract void collides(Entity e); /*{
+		if (e != source  && !(e instanceof PlayerShip) )
 			if (e instanceof Ship) {
 				if (source.isEnemy((Ship) e)) {
 					((Ship) e).takeDamage(damage);
@@ -37,7 +37,7 @@ public class Projectile extends Entity {
 				}
 			}
 
-	}
+	}*/
 
 	@Override
 	public boolean doesCollide(Entity e) {
