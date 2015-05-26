@@ -25,8 +25,7 @@ public class PlayerShip extends Ship {
 	}
 
 	public void moveTurret(PointDouble mouse) {
-		hard
-		PointMainTurret.setOrientation(Utils.getAngle(new PointDouble(
+		hardPointMainTurret.setOrientation(Utils.getAngle(new PointDouble(
 				screen.getWidth() / 2, screen.getHeight() / 2), mouse));
 	}
 
