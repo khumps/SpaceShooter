@@ -1,3 +1,5 @@
+package khumps.utils;
+
 /**
  * A Point contains an X and a Y to make one spot on a Cartesian coordinate
  * system
