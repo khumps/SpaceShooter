@@ -1,15 +1,13 @@
-import java.awt.BorderLayout;
+
 import java.awt.EventQueue;
 
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
+
 import com.jgoodies.forms.factories.DefaultComponentFactory;
-import javax.swing.JCheckBox;
-import javax.swing.SwingConstants;
-import javax.swing.ButtonGroup;
-import javax.swing.JSplitPane;
 
 
 public class JOptionPane extends JFrame {

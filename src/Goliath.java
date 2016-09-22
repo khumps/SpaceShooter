@@ -1,4 +1,3 @@
-
 public class Goliath extends EnemyShip {
 
 	public Goliath(PointDouble point, int scoreModifier, Screen screen) {

@@ -1,12 +1,13 @@
+
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 
 public class Turret extends Entity {
-	protected Projectile projectile;
+	public Projectile projectile;
 	protected final int fireRate;
 	public static final BufferedImage TURRET_IMAGE = Utils
 			.loadImage("turret.png");
-	protected Ship ship;
+	public Ship ship;
 	protected int numUpgrades = 1;
 
 	public Turret(BufferedImage img, double orientation, int fireRate,
@@ -52,13 +53,13 @@ public class Turret extends Entity {
 		if (tickNum % fireRate == 0) {
 			for (int i = 1; i <= numUpgrades; i++) {
 				if (numUpgrades % 2 == 1 && i == numUpgrades)
-					screen.entities.add(addProjectile(getOrientation()));
+					screen.getEntities().add(addProjectile(getOrientation()));
 				else {
 					if (i % 2 == 0)
-						screen.entities.add(addProjectile(getOrientation()
+						screen.getEntities().add(addProjectile(getOrientation()
 								+ Math.toRadians(i * .5)));
 					else
-						screen.entities.add(addProjectile(getOrientation()
+						screen.getEntities().add(addProjectile(getOrientation()
 								+ Math.toRadians(i * -.5)));
 				}
 

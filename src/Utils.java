@@ -1,3 +1,4 @@
+
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -43,16 +44,16 @@ public class Utils
 		public static void resizeProjectile(Entity e) {
 
 			AffineTransform tx = AffineTransform.getRotateInstance(e.getOrientation(),
-					e.img.getWidth() / 2, e.img.getHeight() / 2);
-			tx = AffineTransform.getScaleInstance(e.BULLET_SIZE / e.img.getWidth(), e.BULLET_SIZE
-					- e.img.getWidth());
+					e.getImg().getWidth() / 2, e.getImg().getHeight() / 2);
+			tx = AffineTransform.getScaleInstance(e.BULLET_SIZE / e.getImg().getWidth(), e.BULLET_SIZE
+					- e.getImg().getWidth());
 			AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 			/*
 			 * g.drawImage(op.filter(origImg, null), x, y, origImg.getWidth(),
 			 * origImg.getHeight(), 0, 0, BULLET_SIZE, BULLET_SIZE, null);
 			 */
-			e.img = op.filter(e.getOrigImg(), null);
-			e.setOrigImg(e.img);
+			e.setImg(op.filter(e.getOrigImg(), null));
+			e.setOrigImg(e.getImg());
 
 			// RESIZE ONCE
 		}

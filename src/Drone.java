@@ -1,4 +1,3 @@
-
 public class Drone extends EnemyShip {
 
 	public Drone(PointDouble point, int scoreModifier, Screen screen) {

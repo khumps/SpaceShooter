@@ -1,3 +1,4 @@
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -16,12 +17,12 @@ public abstract class Entity {
 	public static final double LEFT = Math.toRadians(-180);
 	public static final double UP_LEFT = Math.toRadians(-135);
 	private BufferedImage origImg;
-	protected BufferedImage img;
+	private BufferedImage img;
 	private double orientation;
 	private PointDouble position;
 	private Point corner;
 	private boolean hasMoved;
-	protected Bounds collisionArea;
+	public Bounds collisionArea;
 	public final int BULLET_SIZE = 10;
 	protected Screen screen;
 
@@ -31,7 +32,7 @@ public abstract class Entity {
 			position = new PointDouble(100, 10);
 		this.position = location;
 		this.screen = screen;
-		this.img = img;
+		this.setImg(img);
 		this.setOrigImg(img);
 		this.orientation = orientation;
 		collisionArea = b;
@@ -78,14 +79,14 @@ public abstract class Entity {
 	}
 
 	public void draw(Graphics2D g, PointDouble screenCorner, PointDouble offset) {
-		int x = (int) (position.x  - offset.x - img.getWidth()
+		int x = (int) (position.x  - offset.x - getImg().getWidth()
 				/ 2 + screen.getWidth() / 2);
-		int y = (int) (position.y - offset.y - img.getHeight()
+		int y = (int) (position.y - offset.y - getImg().getHeight()
 				/ 2 + screen.getHeight() / 2);
 /*		if(this instanceof Ship)
 		System.out.println("Ship" + x + " " + y);*/
 		AffineTransform tx = AffineTransform.getRotateInstance(orientation,
-				img.getWidth() / 2, img.getHeight() / 2);
+				getImg().getWidth() / 2, getImg().getHeight() / 2);
 		AffineTransformOp op = new AffineTransformOp(tx,
 				AffineTransformOp.TYPE_BILINEAR);
 		g.drawImage(op.filter(getOrigImg(), null), x, y, null);
@@ -105,8 +106,16 @@ public abstract class Entity {
 		return origImg;
 	}
 
-	protected void setOrigImg(BufferedImage img) {
+	public void setOrigImg(BufferedImage img) {
 		origImg = img;
+	}
+
+	public BufferedImage getImg() {
+		return img;
+	}
+
+	public void setImg(BufferedImage img) {
+		this.img = img;
 	}
 
 }

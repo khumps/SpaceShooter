@@ -1,3 +1,4 @@
+
 public class Camera
 	{
 		protected double x;

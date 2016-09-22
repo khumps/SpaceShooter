@@ -6,38 +6,32 @@ import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JViewport;
 import javax.swing.Timer;
 
 public class Screen extends JPanel {
-	protected ArrayList<Entity> entities = new ArrayList<Entity>();
-	protected ArrayBlockingQueue<Method> methods = new ArrayBlockingQueue<Method>(
-			100);
+	private ArrayList<Entity> entities = new ArrayList<Entity>();
+	protected ArrayBlockingQueue<Method> methods = new ArrayBlockingQueue<Method>(100);
 	private Listener listener = new Listener(this);
 	protected int tickNum = 0;
 	private int timerSpeed = 16;
 	Timer timer = new Timer(timerSpeed, listener);
 	int i = 0;
 	protected Point playerMovement = new Point(0, 0);
-	protected PlayerShip player = new PlayerShip(new PointDouble(500, 500),
-			this);
+	public PlayerShip player = new PlayerShip(new PointDouble(500, 500), this);
 	private BufferedImage background = Utils.loadImage("space.png");
 	protected Graphics2D g2;
 	protected boolean debug = false;
 	protected boolean isFullscreen = false;
 	private JFrame frame = new JFrame();
-	protected int score = 0;
+	private GameLogic logic;
+	public int score = 0;
 	private Rectangle oldBounds;
 	private int oldState;
 	protected boolean paused = true;
@@ -53,7 +47,8 @@ public class Screen extends JPanel {
 		addMouseListener(listener);
 		addMouseMotionListener(listener);
 		setFocusable(true);
-		entities.add(player);
+		getEntities().add(player);
+		logic = new GameLogic(this);
 		frame.add(this);
 		timer.setActionCommand("timer");
 		frame.pack();
@@ -65,7 +60,7 @@ public class Screen extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g2 = (Graphics2D) g;
-		// offset = cam.tick();
+		// Draw Background
 		PointDouble corner = new PointDouble(getBounds().x, getBounds().y);
 		for (int i = 0; i < getWidth(); i += background.getWidth()) {
 			for (int j = 0; j < getHeight(); j += background.getHeight()) {
@@ -73,8 +68,8 @@ public class Screen extends JPanel {
 			}
 		}
 		/* Draw Entities */
-		for (int i = 0; i < entities.size(); i++) {
-			Entity e = entities.get(i);
+		for (int i = 0; i < getEntities().size(); i++) {
+			Entity e = getEntities().get(i);
 			if (!paused)
 				e.update(tickNum);
 			e.draw(g2, corner, player.getPosition());
@@ -87,8 +82,6 @@ public class Screen extends JPanel {
 			} else
 				timer.setDelay(timerSpeed);
 		}
-		g.drawString(tickNum + "", 500, 500);
-
 		drawHud(g2);
 		if (paused) {
 			drawPauseScreen(g2);
@@ -97,65 +90,34 @@ public class Screen extends JPanel {
 			drawDeathScreen(g2);
 	}
 
-	public void purgeEntities() {
-		for (int i = 0; i < entities.size(); i++) {
-			Entity e = entities.get(i);
-			double dist = Utils.getDistance(e.getPosition(),
-					player.getPosition());
-			if (!(e instanceof Ship))
-				if (dist > 1000)
-					entities.remove(i);
-			if (e instanceof EnemyShip)
-				if (dist > 1500)
-					entities.remove(i);
-		}
-	}
-
-	public void tick(int tickNum) {
-		checkCollision();
-
-		if (tickNum % 10 == 0)
-			purgeEntities();
-
-		if (tickNum % 20 == 0 && getNumShips() < 10) {
-			entities.add(new EnemyShip(pointOnScreen(player.getPosition()), 1,
-					this));
-		}
-	}
-
-	public void checkCollision() {
-		for (int i = 0; i < entities.size(); i++) {
-			Entity e1 = entities.get(i);
-			if (e1 instanceof Ship)
-				for (int j = 1; j < entities.size(); j++) {
-					e1.doesCollide(entities.get(j));
-				}
-		}
-	}
-
 	public int getNumShips() {
 		int numShips = 0;
-		for (Entity e : entities) {
+		for (Entity e : getEntities()) {
 			if (e instanceof Ship)
 				numShips++;
 		}
 		return numShips;
 	}
 
-	public PointDouble pointOnScreen(PointDouble p/* ,double maxX,double maxY */) {
-		return new PointDouble(Math.random() * (getWidth() + p.x) / 2 - p.x,
-				Math.random() * (getHeight() + p.y) / 2 - p.y);
+	public PointDouble pointOnScreen(PointDouble p) {
+		return new PointDouble(p.x + (Math.random() * getWidth() / 2), p.y + (Math.random() * getHeight() / 2));
 	}
 
 	public synchronized void drawHealth(Graphics2D g, Ship s) {
+		int x = (int) (s.getPosition().x - player.getPosition().x - s.getImg().getWidth() / 2 + this.getWidth() / 2);
+		int y = (int) ((int) s.getPosition().y - player.getPosition().y - s.getImg().getHeight() / 2 + this.getHeight() / 2);
 		if (s.getHealth() < s.getMaxHealth()) {
-			int x = (int) (s.getPosition().x - player.getPosition().x
-					- s.img.getWidth() / 2 + this.getWidth() / 2);
-			int y = (int) ((int) s.getPosition().y - player.getPosition().y
-					- s.img.getHeight() / 2 + this.getHeight() / 2);
 			g.setColor(Color.RED);
 			g.drawRect(x, y, s.getMaxHealth() / 2, 10);
 			g.fillRect(x, y, s.getHealth() / 2, 10);
+		}
+		if (s.getShields() < s.getMaxShields()) {
+			int sx = x + 10;
+			int sy = y + 10;
+			g.setColor(Color.CYAN);
+			if (s.getShields() > 0)
+				g.drawRect(sx, sy, s.getMaxShields(), 5);
+			g.fillRect(sx, sy, s.getShields(), 5);
 		}
 	}
 
@@ -170,8 +132,9 @@ public class Screen extends JPanel {
 		drawPlayerHealth(g);
 		g.setStroke(new BasicStroke(3));
 		g.setColor(Color.GRAY);
-		g.drawRect(50, 50, 100, 20);
+		g.drawRect(50, 39, 180, 30);
 		g.setColor(Color.GREEN);
+		g.setFont(g.getFont().deriveFont(30f));
 		g.drawString("Score: " + score, 55, 65);
 		drawRadar(g);
 	}
@@ -179,13 +142,15 @@ public class Screen extends JPanel {
 	public synchronized void drawPlayerHealth(Graphics2D g) {
 
 		g.setStroke(new BasicStroke(3));
+		// Health
 		g.setColor(Color.GRAY);
-		g.drawRect(20, getHeight() - getHeight() / 15,
-				player.getMaxHealth() / 2, 20);
+		g.drawRect(20, getHeight() - getHeight() / 15, player.getMaxHealth() / 2, 20);
 		g.setColor(Color.GREEN);
-		g.fillRect(20, getHeight() - getHeight() / 15, player.getHealth() / 2,
-				20);
-		// System.out.println(player.getPosition());
+		g.fillRect(20, getHeight() - getHeight() / 15, player.getHealth() / 2, 20);
+		// Shields
+		g.setColor(Color.CYAN);
+		g.drawRect(20, getHeight() - getHeight() / 15 - 21, player.getMaxShields() * 5, 20);
+		g.fillRect(20, getHeight() - getHeight() / 15 - 21, player.getShields() * 5, 20);
 	}
 
 	public void drawRadar(Graphics2D g) {
@@ -199,24 +164,18 @@ public class Screen extends JPanel {
 		g.setColor(Color.GRAY);
 		g.setStroke(new BasicStroke(3));
 		g.drawRect(radarX, radarY, size - offset, size - offset);
-		for (Entity e : entities) {
+		for (Entity e : getEntities()) {
 			if (e instanceof Ship && !(e instanceof PlayerShip)) {
 				g.setColor(Color.black);
-				PointDouble temp = Utils.translateToView(e.getPosition(),
-						player.getPosition(), this);
-				g.drawRect((int) (getWidth() - size + (temp.x / size) * zoom
-						+ size / 2 + .5), (int) (getHeight() - size
-						+ (temp.y / size) * zoom + size / 2 + .5), iconSize,
-						iconSize);
+				PointDouble temp = Utils.translateToView(e.getPosition(), player.getPosition(), this);
+				g.drawRect((int) (getWidth() - size + (temp.x / size) * zoom + size / 2 + .5),
+						(int) (getHeight() - size + (temp.y / size) * zoom + size / 2 + .5), iconSize, iconSize);
 			}
 		}
 		g.setColor(Color.ORANGE);
-		PointDouble temp = Utils.translateToView(player.getPosition(),
-				player.getPosition(), this);
-		g.drawRect(
-				(int) (getWidth() - size + (temp.x / size) * zoom + size / 2 + .5),
-				(int) (getHeight() - size + (temp.y / size) * zoom + size / 2 + .5),
-				iconSize, iconSize);
+		PointDouble temp = Utils.translateToView(player.getPosition(), player.getPosition(), this);
+		g.drawRect((int) (getWidth() - size + (temp.x / size) * zoom + size / 2 + .5),
+				(int) (getHeight() - size + (temp.y / size) * zoom + size / 2 + .5), iconSize, iconSize);
 	}
 
 	public void drawPauseScreen(Graphics2D g) {
@@ -224,8 +183,7 @@ public class Screen extends JPanel {
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.WHITE);
 		g.setFont(new Font(g.getFont().getName(), Font.BOLD, 32));
-		g.drawString("PAUSED hit ESCAPE to un-pause", getWidth() / 3,
-				getHeight() / 3);
+		g.drawString("PAUSED hit ESCAPE to un-pause", getWidth() / 3, getHeight() / 3);
 	}
 
 	public void drawDeathScreen(Graphics2D g) {
@@ -233,6 +191,10 @@ public class Screen extends JPanel {
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.BLACK);
 		g.drawString("YOU DIED", getWidth() / 2, getHeight() / 2);
+	}
+
+	public void tick(int tickNum) {
+		logic.tick(tickNum);
 	}
 
 	protected void enableFullscreen() {
@@ -268,6 +230,14 @@ public class Screen extends JPanel {
 	public static void main(String[] args) {
 		new Screen();
 
+	}
+
+	public ArrayList<Entity> getEntities() {
+		return entities;
+	}
+
+	public void setEntities(ArrayList<Entity> entities) {
+		this.entities = entities;
 	}
 
 }

@@ -1,3 +1,4 @@
+
 import java.awt.Rectangle;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
@@ -49,7 +50,7 @@ public abstract class Projectile extends Entity {
 		return false;
 	}
 
-	protected void setDamage(int damage) {
+	public void setDamage(int damage) {
 		this.damage = damage;
 	}
 

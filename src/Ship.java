@@ -1,3 +1,5 @@
+
+
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -6,25 +8,32 @@ import java.awt.image.BufferedImage;
 
 public abstract class Ship extends Entity {
 	private int health;
+	private int shield;
 	private final int maxHealth;
+	private int maxShield;
+	private boolean takenDamage = false;
+	private int maxRegenTime = 100;
+	private int regenTime = maxRegenTime;
 	protected Turret hardPointMainTurret;
 	protected Turret hardPoint2Turret;
 	private boolean isAlive = true;
-	protected final PointDouble hardPointMain;
-	protected final PointDouble hardPoint2;
+	public final PointDouble hardPointMain;
+	public final PointDouble hardPoint2;
 
-	public Ship(BufferedImage img, PointDouble location, int health,
-			Turret turret, Bounds b, Screen screen) {
+	public Ship(BufferedImage img, PointDouble location, int health, int shield, Turret turret, Bounds b,
+			Screen screen) {
 		super(img, Math.toRadians((Math.random() * 360)), location, b, screen);
 		this.hardPointMainTurret = turret;
 		this.health = health;
 		maxHealth = health;
+		maxShield = shield;
+		this.shield = maxShield;
 		hardPointMain = getPosition();
 		hardPoint2 = hardPointMain.clone();
 		hardPoint2.setX(hardPointMain.y + 20);
 		turret.setPosition(hardPointMain);
 		addTurret(turret, hardPoint2Turret);
-		screen.entities.add(this);
+		screen.getEntities().add(this);
 	}
 
 	public boolean isAlive() {
@@ -32,11 +41,21 @@ public abstract class Ship extends Entity {
 	}
 
 	public void update() {
+		regen();
 		hardPointMainTurret.setPosition(this.getPosition());
 	}
 
 	public void moveTurret(double orientation) {
 		hardPointMainTurret.setOrientation(orientation);
+	}
+
+	public void regen() {
+		if (regenTime > 0)
+			regenTime--;
+		else {
+			if (shield < maxShield)
+				shield++;
+		}
 	}
 
 	public void draw(Graphics2D g, PointDouble corner, PointDouble offset) {
@@ -45,8 +64,8 @@ public abstract class Ship extends Entity {
 	}
 
 	public void remove() {
-		screen.entities.remove(hardPointMainTurret);
-		screen.entities.remove(this);
+		screen.getEntities().remove(hardPointMainTurret);
+		screen.getEntities().remove(this);
 	}
 
 	public void fire(int tickNum) {
@@ -55,12 +74,22 @@ public abstract class Ship extends Entity {
 	}
 
 	public void takeDamage(int damage) {
-		health -= damage;
-		if (health <= 0) {
-			isAlive = false;
-			remove();
+		if (damage > 0) {
+			takenDamage = true;
+			regenTime = maxRegenTime;
+			if (shield >= damage)
+				shield -= damage;
+			else {
+				int temp = damage - shield;
+				shield = 0;
+				health -= temp;
+			}
+			if (health <= 0) {
+				isAlive = false;
+				remove();
+			}
+			screen.repaint();
 		}
-		screen.repaint();
 	}
 
 	public void addTurret(Turret turret, Turret hardPoint) {
@@ -75,6 +104,14 @@ public abstract class Ship extends Entity {
 
 	public int getMaxHealth() {
 		return maxHealth;
+	}
+
+	public int getShields() {
+		return shield;
+	}
+
+	public int getMaxShields() {
+		return maxShield;
 	}
 
 	@Override
